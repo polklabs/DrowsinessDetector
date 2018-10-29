@@ -4,7 +4,7 @@ if sys.version_info[0] > 2 or sys.version_info[0] < 2:
 
 import cv2
 
-print(cv2.__version__)
+print("OpenCV version: "+str(cv2.__version__))
 
 cap = cv2.VideoCapture(0)
 
