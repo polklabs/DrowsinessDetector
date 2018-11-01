@@ -12,3 +12,7 @@ python -m pip install opencv-python
 
 ### Running the program
 Run the command python start.py
+Press the start button
+
+To pause, type the letter q
+To exit, exit out of the button window
