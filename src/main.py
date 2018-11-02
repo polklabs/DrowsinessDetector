@@ -1,5 +1,6 @@
 import cv2
 import time
+import isDrowsy
 
 def main(webcamSource):
     #This is place holder code -------------------
@@ -17,6 +18,10 @@ def main(webcamSource):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+        if isDrowsy.isDrowsy():
+            print("Drowsy")
+        else:
+            print("Not Drowsy")
         #Runs the webcam at 1 fps
         elapsed_time = time.time() - start_time
         time_left =1-elapsed_time 
