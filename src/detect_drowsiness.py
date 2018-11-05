@@ -50,7 +50,7 @@ args = vars(ap.parse_args())
 # frames the eye must be below the threshold for to set off the
 # alarm
 EYE_AR_THRESH = 0.3
-EYE_AR_CONSEC_FRAMES = 48
+EYE_AR_CONSEC_FRAMES = 5
 
 # initialize the frame counter as well as a boolean used to
 # indicate if the alarm is going off
@@ -67,6 +67,12 @@ predictor = dlib.shape_predictor(args["shape_predictor"])
 # right eye, respectively
 (lStart, lEnd) = face_utils.FACIAL_LANDMARKS_IDXS["left_eye"]
 (rStart, rEnd) = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
+
+(mStart, mEnd) = face_utils.FACIAL_LANDMARKS_IDXS["mouth"]
+(rEStart, rEEnd) = face_utils.FACIAL_LANDMARKS_IDXS["right_eyebrow"]
+(lEStart, lEEnd) = face_utils.FACIAL_LANDMARKS_IDXS["left_eyebrow"]
+(jStart, jEnd) = face_utils.FACIAL_LANDMARKS_IDXS["jaw"]
+(nStart, nEnd) = face_utils.FACIAL_LANDMARKS_IDXS["nose"]
 
 # start the video stream thread
 print("[INFO] starting video stream thread...")
@@ -99,6 +105,13 @@ while True:
 		rightEye = shape[rStart:rEnd]
 		leftEAR = eye_aspect_ratio(leftEye)
 		rightEAR = eye_aspect_ratio(rightEye)
+		
+		#Added features
+		mouth = shape[mStart:mEnd]
+		right_eyebrow = shape[rEStart:rEEnd]
+		left_eyebrow = shape[lEStart:lEEnd]
+		jaw = shape[jStart:jEnd]
+		nose = shape[nStart:nEnd]
 
 		# average the eye aspect ratio together for both eyes
 		ear = (leftEAR + rightEAR) / 2.0
@@ -109,6 +122,20 @@ while True:
 		rightEyeHull = cv2.convexHull(rightEye)
 		cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 0), 1)
 		cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 0), 1)
+
+		#Added features
+		mouthHull = cv2.convexHull(mouth)
+		rightEyebrowHull = cv2.convexHull(right_eyebrow)
+		leftEyebrowHull = cv2.convexHull(left_eyebrow)
+		noseHull = cv2.convexHull(nose)
+		cv2.drawContours(frame, [mouthHull], -1, (0, 255, 0), -1)
+		cv2.drawContours(frame, [rightEyebrowHull], -1, (0, 255, 0), -1)
+		cv2.drawContours(frame, [leftEyebrowHull], -1, (0, 255, 0), -1)
+		cv2.drawContours(frame, [noseHull], -1, (0, 255, 0), -1)
+		for l in range(1, len(jaw)):
+			ptA = tuple(jaw[l-1])
+			ptB = tuple(jaw[l])
+			cv2.line(frame, ptA, ptB, (0, 255, 0), 1)
 
 		# check to see if the eye aspect ratio is below the blink
 		# threshold, and if so, increment the blink frame counter
