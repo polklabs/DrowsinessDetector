@@ -1,7 +1,20 @@
-class Alert:
+from threading import Thread
+import playsound
 
-    def alert_value(on_off):
-        if(on_off == true):
-            ALARM_ON = true
-        else if(on_off == false):
-            ALARM_ON = false
+
+def sound_alarm(path):
+    playsound.playsound(path)
+
+def alert_value(on_off):
+    
+    print("in the function")
+    if(on_off == True):
+        """   t = Thread(target=sound_alarm,
+                   args=(args["alarm"],))
+        t.deamon = True
+        t.start() """
+        sound_alarm("../assets/alarm.wav")
+        
+        
+    elif(on_off == False):
+        return
