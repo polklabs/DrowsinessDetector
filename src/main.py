@@ -8,6 +8,7 @@ import cv2 #For image processing
 import time #for timeing frame rate
 import dlib #For detecting faces and features
 
+import alerts
 import isDrowsy #For testing
 
 test = False
@@ -55,6 +56,8 @@ def main(webcamSource):
 	while True:
 		start_time = time.time()
 
+		alertUser = False
+
 		frame = grabFrame(vs)
 		if test:
 			if type(frame) is np.ndarray:
@@ -88,8 +91,11 @@ def main(webcamSource):
 
 			#Check if the person is drowsy
 			if isDrowsy.isDrowsy(shape):
+				alertUser = True
 				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+
+		alerts.Alert.alert_value(alertUser)
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
