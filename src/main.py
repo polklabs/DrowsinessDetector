@@ -95,7 +95,7 @@ def main(webcamSource):
 				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
-		alerts.Alert.alert_value(alertUser)
+		alerts.alert_value(alertUser)
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
