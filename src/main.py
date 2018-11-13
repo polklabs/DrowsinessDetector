@@ -7,7 +7,6 @@ import imutils
 import cv2 #For image processing
 import time #for timeing frame rate
 import dlib #For detecting faces and features
-import os
 
 import alerts
 import isDrowsy #For testing
@@ -156,7 +155,7 @@ def main(webcamSource):
 			else:
 				COUNTER = 0
 
-		#alerts.alert_value(alertUser)
+                #alerts.alert_value(alertUse)
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
