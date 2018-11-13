@@ -13,14 +13,24 @@ import Tkinter
 import tkMessageBox
 from PIL import Image, ImageTk
 
+isRunning = False
+runDrowsinessDetection = buttonThread.ButtonThread(webcamSource)
+
 def helloCallBack():
-   main.main(webcamSource)
-   
+   #runDrowsinessDetection.run()
+   if(runDrowsinessDetection.isAlive() == False):
+      runDrowsinessDetection.run()
+   else:
+      runDrowsinessDetection.join()
+      
+
+
+top = Tkinter.Tk()
+
 imageText = "CLICK AEROSPACE TO START"
 logo = Image.open("../assets/logo.jpg")
 photo = ImageTk.PhotoImage(logo)
 
-top = Tkinter.Tk()
 top.resizable(False, False)
 top.iconbitmap(default = "../assets/icon.ico")
 

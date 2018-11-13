@@ -1,12 +1,16 @@
 import threading
 import main
+import sys
 
 class ButtonThread(threading.Thread):
    def __init__(self, webcamSource):
       super(ButtonThread, self).__init__()
       self.webcamSource = webcamSource
-   def run(self,webcamSource):
-           main.main(webcamSource)
-   def kill(self,webcamSource):
-      # No idea how this part is suppose to work yet
-      return
+   def start(self):
+        return
+   def run(self):
+        main.main(self.webcamSource)
+   def join(self, timeout=None):
+        self._stopevent.set(  )
+        threading.Thread.join(self, timeout)
+
