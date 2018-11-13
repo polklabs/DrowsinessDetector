@@ -82,6 +82,8 @@ def main(webcamSource):
 	vs = VideoStream(webcamSource).start()
 	time.sleep(1.0)
 
+	COUNTER = 0
+
 	while True:
 		start_time = time.time()
 
