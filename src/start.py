@@ -11,6 +11,9 @@ import tkMessageBox
 import threading
 from PIL import Image, ImageTk
 
+imageText = "PRESS AEROSPACE TO START"
+logo = Image.open("../assets/logo.jpg")
+
 ##class ButtonThread(threading.Thread, webcamSource):
 ##   def __init__(self):
 ##      super(ButtonThread, self).__init__()
@@ -25,12 +28,13 @@ top = Tkinter.Tk()
 def helloCallBack():
    main.main(webcamSource)
    #buttonPressThread = ButtonThread(target = main.main(webcamSource));
-
-logo = Image.open("../assets/logo.jpg")
+top.resizable(False, False)
+top.iconbitmap(default = "../assets/icon.ico")
+label = Tkinter.Label(top, fg = "dark blue", text = imageText)
+label.pack()
 photo = ImageTk.PhotoImage(logo)
 B = Tkinter.Button(top,image = photo, height = 100,
-                   width = 800,text ="Start the Detector",
-                   command = helloCallBack)
+                   width = 800, command = helloCallBack)
 #B.config(height = 10, width = 30)
 
 #photo = Tkinter.PhotoImage(file = "../assets/logo.jpg")
