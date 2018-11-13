@@ -7,6 +7,7 @@ import imutils
 import cv2 #For image processing
 import time #for timeing frame rate
 import dlib #For detecting faces and features
+import os
 
 import alerts
 import isDrowsy #For testing

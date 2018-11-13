@@ -16,14 +16,17 @@ class ButtonThread(threading.Thread):
    def kill(self):
       # No idea how this part is suppose to work yet
       return
-      
+
 top = Tkinter.Tk()
+
+buttonPressThread = ButtonThread(main.main(webcamSource));
 
 def helloCallBack():
    main.main(webcamSource)
       
  
 B = Tkinter.Button(top, text ="Start the Detector", command = helloCallBack)
+B.config(height = 10, width = 30)
 
 B.pack()
 top.mainloop()
