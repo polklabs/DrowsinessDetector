@@ -16,6 +16,7 @@ testFailed = 0
 
 shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
 frameRate =  60
+isAlive = False
 
 # define two constants, one for the eye aspect ratio to indicate
 # blink and then a second constant for the number of consecutive
@@ -70,6 +71,13 @@ def noFace(frame):
 	cv2.putText(frame, "NO FACE DETECTED!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
+def changeLiveState():
+        global isAlive
+        isAlive = not isAlive
+
+def getIsAlive():
+        return isAlive
+        
 def main(webcamSource):
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
@@ -83,8 +91,8 @@ def main(webcamSource):
 	time.sleep(1.0)
 
 	COUNTER = 0
-
-	while True:
+        isAlive = True
+	while isAlive:
 		start_time = time.time()
 
 		alertUser = False
@@ -161,6 +169,7 @@ def main(webcamSource):
 		key = cv2.waitKey(1) & 0xFF
 
 		if key == ord("q"):
+                        isAlive = False
 			break
 
 		#Determine how long if at all the program should wait before continuing

@@ -18,10 +18,11 @@ runDrowsinessDetection = buttonThread.ButtonThread(webcamSource)
 
 def helloCallBack():
    #runDrowsinessDetection.run()
+   print(runDrowsinessDetection.isAlive(), "\n")
    if(runDrowsinessDetection.isAlive() == False):
       runDrowsinessDetection.run()
    else:
-      runDrowsinessDetection.join()
+      runDrowsinessDetection.kill()
       
 
 
