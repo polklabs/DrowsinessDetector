@@ -6,8 +6,7 @@ webcamSource = initialize.initialize()
 import main
 
 # Unique button threading class
-import buttonThread
-import multiprocessing
+import button_multiprocess
 
 # Have a button that starts the program
 import Tkinter
@@ -15,19 +14,14 @@ import tkMessageBox
 from PIL import Image, ImageTk
 
 isRunning = False
-#runDrowsinessDetection = buttonThread.ButtonThread(webcamSource)
-runDrowsinessDetection = multiprocessing.Process(target = main.main,
-                                                 args = (webcamSource,))
+runDrowsinessDetection = button_multiprocess.ButtonProcess(webcamSource)
+processes = []
+processes.append(runDrowsinessDetection)
+runDrowsinessDetection.start()
 
 def helloCallBack():
    global runDrowsinessDetection
-   runDrowsinessDetection.start()
-   #runDrowsinessDetection.run()
-   #print(runDrowsinessDetection.isAlive(), "\n")
-   #if(runDrowsinessDetection.isAlive() == False):
-   #   runDrowsinessDetection.run()
-   #else:
-   #   runDrowsinessDetection.kill()
+   runDrowsinessDetection.run()
 
 # Using a counter to test for asyncronous inputs
 counter = 0
@@ -61,5 +55,4 @@ B = Tkinter.Button(top,image = photo, height = 100,
                    width = 800, command = helloCallBack)
 
 B.pack()
-
 top.mainloop()
