@@ -1,8 +1,8 @@
-import threading
+from multiprocessing import Process
 import main
 import sys
 
-class ButtonThread(threading.Thread):
+class ButtonThread(Process):
    def __init__(self, webcamSource):
       super(ButtonThread, self).__init__()
       self.webcamSource = webcamSource
