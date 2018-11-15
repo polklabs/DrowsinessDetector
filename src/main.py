@@ -54,11 +54,12 @@ def main(webcamSource):
 	vs = VideoStream(webcamSource).start()
 	time.sleep(1.0)
 
+	alertUser = False
+	sentAlert = False
+
 	COUNTER = 0
 	while True:
 		start_time = time.time()
-
-		alertUser = False
 
 		frame = grabFrame(vs)
 		if test:
@@ -99,8 +100,14 @@ def main(webcamSource):
 			if COUNTER >= EYE_AR_CONSEC_FRAMES:
 				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-			
-		#alerts.alert_value(alertUser)
+				alertUser = True
+			else:
+				sentAlert = False
+				alertUser = False
+
+		if sentAlert == False and alertUser == True:
+			alerts.alert_value(alertUser)
+			sentAlert = True
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
