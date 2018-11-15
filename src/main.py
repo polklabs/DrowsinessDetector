@@ -71,13 +71,6 @@ def noFace(frame):
 	cv2.putText(frame, "NO FACE DETECTED!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
-def changeLiveState():
-        global isAlive
-        isAlive = not isAlive
-
-def getIsAlive():
-        return isAlive
-        
 def main(webcamSource):
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
@@ -91,8 +84,7 @@ def main(webcamSource):
 	time.sleep(1.0)
 
 	COUNTER = 0
-        isAlive = True
-	while isAlive:
+	while True:
 		start_time = time.time()
 
 		alertUser = False

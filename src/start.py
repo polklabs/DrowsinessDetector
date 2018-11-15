@@ -1,20 +1,16 @@
-# initialize the project and check setup
-import initialize
-webcamSource = initialize.initialize()
-
-# Start running the project
-import main
-
 # Unique button process class
 from subprocess import Popen
+
 # Have a button that starts the program
 import Tkinter
-import tkMessageBox
 from PIL import Image, ImageTk
 
-
 if __name__ == '__main__':
+
    haveOpened = False
+
+   # Runs a subprocess if there isn't one running
+   # Otherwise polls to see if there is a subprocess to kill
    def helloCallBack():
       global haveOpened
       if(haveOpened == False):
@@ -39,30 +35,8 @@ if __name__ == '__main__':
    top.resizable(False, False)
    top.iconbitmap(default="../assets/icon.ico")
 
-   # Using a counter to test for asyncronous inputs
-   counter = 0
-   def counter_label(label):
-      counter = 0
-      def count():
-         global counter
-         counter += 1
-         label.config(text=str(counter))
-         label.after(1000,count)
-      count()
-      
-   label = Tkinter.Label(top, fg="dark blue", text=imageText)
-   label.pack()
-
-   otherlabel = Tkinter.Label(top, fg="dark green")
-   otherlabel.pack()
-   counter_label(otherlabel)
-
-
-   # runHelloCallBack = helloCallBack(runDrowsinessDetection)
    B = Tkinter.Button(top,image=photo, height =100,width=800,
                       command=helloCallBack)
 
-
    B.pack()
    top.mainloop()
-   
