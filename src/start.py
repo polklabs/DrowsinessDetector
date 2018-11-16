@@ -8,7 +8,8 @@ from PIL import Image, ImageTk
 if __name__ == '__main__':
 
    haveOpened = False
-
+   AEROSPACE_LOGO = "../assets/logo.jpg"
+   A_LOGO = "../assets/A_logo.jpg"
    # Runs a subprocess if there isn't one running
    # Otherwise polls to see if there is a subprocess to kill
    def helloCallBack():
@@ -28,7 +29,7 @@ if __name__ == '__main__':
    top = Tkinter.Tk()
 
    imageText = "CLICK AEROSPACE TO START"
-   logo = Image.open("../assets/logo.jpg")
+   logo = Image.open(AEROSPACE_LOGO)
    photo = ImageTk.PhotoImage(logo)
 
    top.title("Aerospace Drowsiness Detector")
