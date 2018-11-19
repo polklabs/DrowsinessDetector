@@ -155,7 +155,7 @@ def main(webcamSource):
 			else:
 				COUNTER = 0
 
-                #alerts.alert_value(alertUse)
+                #alerts.alert_value(alertUser)
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF

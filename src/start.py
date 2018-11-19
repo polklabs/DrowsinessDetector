@@ -1,3 +1,5 @@
+import initialize
+
 # Unique button process class
 from subprocess import Popen
 
@@ -10,20 +12,22 @@ if __name__ == '__main__':
    haveOpened = False
    AEROSPACE_LOGO = "../assets/logo.jpg"
    A_LOGO = "../assets/A_logo.jpg"
+   webcameraSource = initialize.initialize()
+
    # Runs a subprocess if there isn't one running
    # Otherwise polls to see if there is a subprocess to kill
    def helloCallBack():
       global haveOpened
       if(haveOpened == False):
          global p
-         p = Popen(["python", "button_popen.py"])
+         p = Popen(["python", "button_popen.py", str(webcameraSource)])
          haveOpened = True
       else:
          poll = p.poll()
          if (poll == None):
             p.kill()
          else:
-            p = Popen(["python", "button_popen.py"])
+            p = Popen(["python", "button_popen.py", str(webcameraSource)])
 
 
    top = Tkinter.Tk()
