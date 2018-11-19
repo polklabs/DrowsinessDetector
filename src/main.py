@@ -10,6 +10,7 @@ import dlib #For detecting faces and features
 import alerts
 import isDrowsy #For testing
 
+testing = False
 test = 0
 testFailed = 0
 
@@ -68,7 +69,7 @@ def main(webcamSource):
 		start_time = time.time()
 
 		frame = grabFrame(vs)
-		if test != 0:
+		if testing:
 			if type(frame) is np.ndarray:
 				print("[TEST] Frame grab: passed")
 			else:
@@ -127,12 +128,13 @@ def main(webcamSource):
 		if time_left > 0:
 			time.sleep(time_left)
 
-		if test == 2:
-			vs.stop()
-			return
-		if test == 1:
-			time.sleep(5)
-		test += 1
+		if testing:
+			if test == 2:
+				vs.stop()
+				return
+			if test == 1:
+				time.sleep(5)
+			test += 1
 
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
@@ -141,6 +143,7 @@ def main(webcamSource):
 if __name__ == "__main__":
 	import sys
 
+	testing = True
 	test = 1
 	main(0)
 	print("[INFO] Tests finished")
