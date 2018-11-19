@@ -3,8 +3,6 @@ import initialize
 # Unique button process class
 from subprocess import Popen
 import atexit
-import time
-import sys
 
 # Have a button that starts the program
 import Tkinter
@@ -17,6 +15,7 @@ if __name__ == '__main__':
    A_LOGO = "../assets/A_logo.jpg"
    webcameraSource = initialize.initialize()
    all_processes = []
+
    # Runs a subprocess if there isn't one running
    # Otherwise polls to see if there is a subprocess to kill
    def helloCallBack():
@@ -35,6 +34,7 @@ if __name__ == '__main__':
             p = Popen(["python", "button_popen.py", str(webcameraSource)])
             all_processes.append(p)
 
+   # Kills all subprocesses that are running if there are any
    def cleanup():
       global all_processes
       if len(all_processes) != 0:
@@ -56,7 +56,6 @@ if __name__ == '__main__':
 
    B = Tkinter.Button(top,image=photo, height =100,width=450,
                       command=helloCallBack)
-
    B.pack()
    top.mainloop()
 

@@ -16,7 +16,6 @@ testFailed = 0
 
 shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
 frameRate =  60
-isAlive = False
 
 EYE_AR_CONSEC_FRAMES = 48
 
@@ -121,7 +120,6 @@ def main(webcamSource):
 		key = cv2.waitKey(1) & 0xFF
 
 		if key == ord("q"):
-                        isAlive = False
 			break
 
 		#Determine how long if at all the program should wait before continuing
