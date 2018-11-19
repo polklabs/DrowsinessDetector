@@ -10,7 +10,8 @@ import dlib #For detecting faces and features
 import alerts
 import isDrowsy #For testing
 
-test = False
+testing = False
+test = 0
 testFailed = 0
 
 shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
@@ -27,7 +28,11 @@ def grabFrame(vs):
 
 #Opens image for testing
 def grabTestFrame():
-	img = cv2.imread("testFace.jpg",1)
+	img = ''
+	if test == 1:
+		img = cv2.imread("testFace.jpg",1)
+	if test == 2:
+		img = cv2.imread("testFace2.jpg", 1)
 	frame = np.array(img)
 	frame = imutils.resize(frame, width=450)
 	return frame
@@ -44,6 +49,8 @@ def noFace(frame):
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
 def main(webcamSource):
+	global test, testFailed
+
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
 	print("[INFO] loading facial landmark predictor...")
@@ -63,7 +70,7 @@ def main(webcamSource):
 		start_time = time.time()
 
 		frame = grabFrame(vs)
-		if test:
+		if testing:
 			if type(frame) is np.ndarray:
 				print("[TEST] Frame grab: passed")
 			else:
@@ -123,9 +130,13 @@ def main(webcamSource):
 		if time_left > 0:
 			time.sleep(time_left)
 
-		if test:
-			vs.stop()
-			return
+		if testing:
+			if test == 2:
+				vs.stop()
+				return
+			if test == 1:
+				time.sleep(5)
+			test += 1
 
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
@@ -134,11 +145,12 @@ def main(webcamSource):
 if __name__ == "__main__":
 	import sys
 
-	test = True
+	testing = True
+	test = 1
 	main(0)
 	print("[INFO] Tests finished")
 	print("[RESULT] "+str(testFailed) + " tests failed.")
-	print("\nWaiting 30 seconds to close window...")
-	time.sleep(30)
+	print("\nWaiting 5 seconds to close window...")
+	time.sleep(5)
 	cv2.destroyAllWindows()
 	sys.exit(0)

@@ -1,8 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\tests"
+    "\\src"
   ],
-  "SelectedNode": "\\tests\\opencv_install_check.py",
+  "SelectedNode": "\\src\\start.py",
   "PreviewInSolutionExplorer": false
 }
