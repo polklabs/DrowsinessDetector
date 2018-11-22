@@ -9,13 +9,14 @@ import dlib #For detecting faces and features
 
 import alerts
 import isDrowsy #For testing
+import blinkFreq
 
 testing = False
 test = 0
 testFailed = 0
 
 shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
-frameRate =  60
+frameRate =  30
 
 EYE_AR_CONSEC_FRAMES = 48
 
@@ -64,6 +65,7 @@ def main(webcamSource):
 	alertUser = False
 	sentAlert = False
 
+	totalFrames = 0
 	COUNTER = 0
 	while True:
 		start_time = time.time()
@@ -76,7 +78,6 @@ def main(webcamSource):
 				print("[TEST] Frame grab: failed")
 				testFailed += 1
 			frame = grabTestFrame()
-
 
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -96,6 +97,11 @@ def main(webcamSource):
 
 			shape = predictor(gray, rect)
 			shape = face_utils.shape_to_np(shape)
+
+			#Get blink rate and print on shown image
+			rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
+			cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
+					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
 			frame = drawBox(frame, rect)
 			
@@ -121,6 +127,10 @@ def main(webcamSource):
 
 		if key == ord("q"):
 			break
+
+		# count number of frames passed while resetting to 0 when 1 minute is reached
+		totalFrames += 1
+		totalFrames = totalFrames % (60*frameRate)
 
 		#Determine how long if at all the program should wait before continuing
 		elapsed_time = time.time() - start_time
