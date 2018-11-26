@@ -17,6 +17,7 @@ shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
 frameRate =  60
 
 EYE_AR_CONSEC_FRAMES = 48
+MOUTH_AR_CONSEC_FRAMES = 30
 
 #Grabs frame from the video source
 def grabFrame(vs):
@@ -57,7 +58,8 @@ def main(webcamSource):
 	alertUser = False
 	sentAlert = False
 
-	COUNTER = 0
+	EYE_COUNTER = 0
+	MOUTH_COUNTER = 0
 	while True:
 		start_time = time.time()
 
@@ -92,12 +94,17 @@ def main(webcamSource):
 
 			frame = drawBox(frame, rect)
 			
-			if isDrowsy.eyesClosed(shape) == True:
-				COUNTER += 1
+			if isDrowsy.mouthOpen(shape) == True:
+				MOUTH_COUNTER += 1
 			else:
-				COUNTER = 0
+				MOUTH_COUNTER = 0
+			
+			if isDrowsy.eyesClosed(shape) == True:
+				EYE_COUNTER += 1
+			else:
+				EYE_COUNTER = 0
 				
-			if COUNTER >= EYE_AR_CONSEC_FRAMES:
+			if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES or MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
 				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 				alertUser = True

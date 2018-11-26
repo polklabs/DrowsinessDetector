@@ -14,7 +14,8 @@ import alerts
 # frames the eye must be below the threshold for to set off the
 # alarm
 EYE_AR_THRESH = 0.3
-EYE_AR_CONSEC_FRAMES = 48
+
+MOUTH_AR_THRESH = 0.4
 
 # grab the indexes of the facial landmarks for the left and
 # right eye, respectively
@@ -32,11 +33,10 @@ def eye_aspect_ratio(eye):
 	C = dist.euclidean(eye[0], eye[3])
 
 	# compute the eye aspect ratio
-	ear = (A + B) / (2.0 * C)
+	eye_ar = (A + B) / (2.0 * C)
 
 	# return the eye aspect ratio
-	return ear
-
+	return eye_ar
 
 def eyesClosed(shape):
 
@@ -48,7 +48,7 @@ def eyesClosed(shape):
 	rightEAR = eye_aspect_ratio(rightEye)
 
 	# average the eye aspect ratio together for both eyes
-	ear = (leftEAR + rightEAR) / 2.0
+	eye_ar = (leftEAR + rightEAR) / 2.0
 
 	# compute the convex hull for the left and right eye, then
 	# visualize each of the eyes
@@ -60,5 +60,22 @@ def eyesClosed(shape):
 	#Check if the person is drowsy
 	# check to see if the eye aspect ratio is below the blink
 	# threshold, and if so, increment the blink frame counter
-	if ear < EYE_AR_THRESH:
+	if eye_ar < EYE_AR_THRESH:
 		return True
+		
+def mouthOpen(shape):
+	mouthTop = shape[51]
+	mouthBot = shape[57]
+	mouthLeft = shape[54]
+	mouthRight = shape[48]
+	
+	A = dist.euclidean(mouthTop, mouthBot)
+	B = dist.euclidean(mouthLeft, mouthRight)
+	
+	mouth_ar = (A) / (2.0 * B)
+	
+	if mouth_ar > MOUTH_AR_THRESH:
+		return True
+	
+	
+	
