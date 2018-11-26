@@ -9,12 +9,14 @@ import dlib #For detecting faces and features
 
 import alerts
 import isDrowsy #For testing
+import blinkFreq
 
-test = False
+testing = False
+test = 0
 testFailed = 0
 
 shape_predictor_file = "shape_predictor_68_face_landmarks.dat"
-frameRate =  60
+frameRate =  30
 
 EYE_AR_CONSEC_FRAMES = 48
 MOUTH_AR_CONSEC_FRAMES = 30
@@ -27,7 +29,11 @@ def grabFrame(vs):
 
 #Opens image for testing
 def grabTestFrame():
-	img = cv2.imread("testFace.jpg",1)
+	img = ''
+	if test == 1:
+		img = cv2.imread("testFace.jpg",1)
+	if test == 2:
+		img = cv2.imread("testFace2.jpg", 1)
 	frame = np.array(img)
 	frame = imutils.resize(frame, width=450)
 	return frame
@@ -44,6 +50,8 @@ def noFace(frame):
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
 def main(webcamSource):
+	global test, testFailed
+
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
 	print("[INFO] loading facial landmark predictor...")
@@ -60,18 +68,18 @@ def main(webcamSource):
 
 	EYE_COUNTER = 0
 	MOUTH_COUNTER = 0
+	totalFrames = 0
 	while True:
 		start_time = time.time()
 
 		frame = grabFrame(vs)
-		if test:
+		if testing:
 			if type(frame) is np.ndarray:
 				print("[TEST] Frame grab: passed")
 			else:
 				print("[TEST] Frame grab: failed")
 				testFailed += 1
 			frame = grabTestFrame()
-
 
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -91,6 +99,11 @@ def main(webcamSource):
 
 			shape = predictor(gray, rect)
 			shape = face_utils.shape_to_np(shape)
+
+			#Get blink rate and print on shown image
+			rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
+			cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
+					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
 			frame = drawBox(frame, rect)
 			
@@ -122,15 +135,23 @@ def main(webcamSource):
 		if key == ord("q"):
 			break
 
+		# count number of frames passed while resetting to 0 when 1 minute is reached
+		totalFrames += 1
+		totalFrames = totalFrames % (60*frameRate)
+
 		#Determine how long if at all the program should wait before continuing
 		elapsed_time = time.time() - start_time
 		time_left =(1.0/frameRate)-elapsed_time 
 		if time_left > 0:
 			time.sleep(time_left)
 
-		if test:
-			vs.stop()
-			return
+		if testing:
+			if test == 2:
+				vs.stop()
+				return
+			if test == 1:
+				time.sleep(5)
+			test += 1
 
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
@@ -139,11 +160,12 @@ def main(webcamSource):
 if __name__ == "__main__":
 	import sys
 
-	test = True
+	testing = True
+	test = 1
 	main(0)
 	print("[INFO] Tests finished")
 	print("[RESULT] "+str(testFailed) + " tests failed.")
-	print("\nWaiting 30 seconds to close window...")
-	time.sleep(30)
+	print("\nWaiting 5 seconds to close window...")
+	time.sleep(5)
 	cv2.destroyAllWindows()
 	sys.exit(0)
