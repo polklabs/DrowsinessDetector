@@ -73,9 +73,12 @@ if __name__ == '__main__':
 
    top = Tkinter.Tk()
 
-   imageText = "CLICK AEROSPACE TO START"
+   imageText = "AEROSPACE DROWSINESS DETECTOR"
    logo = Image.open(A_LOGO)
    photo = ImageTk.PhotoImage(logo)
+
+   label = Tkinter.Label(top, text=imageText)
+   label.pack()
 
    top.title("Drowsiness Detector")
    top.resizable(False, False)
