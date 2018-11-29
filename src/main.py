@@ -49,6 +49,10 @@ def noFace(frame):
 	cv2.putText(frame, "NO FACE DETECTED!", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
+def multipleFace(frame):
+	cv2.putText(frame, "MULTIPLE FACES DETECTED", (10, 30), 
+					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+
 def main(webcamSource):
 	global test, testFailed
 
@@ -92,38 +96,45 @@ def main(webcamSource):
 				testFailed += 1
 				print("[TEST] Face detection: failed")
 
-		#Iterate over the faces
-		for rect in rects:
+		if len(rects) > 1: 
+			multipleFace(frame)
 			if test:
-				print("[TEST] Face detection: passed")
+				testFailed += 1
+				print("[TEST] Face detection: failed")
+		
+		else:
+			#Iterate over the faces
+			for rect in rects:
+				if test:
+					print("[TEST] Face detection: passed")
 
-			shape = predictor(gray, rect)
-			shape = face_utils.shape_to_np(shape)
+				shape = predictor(gray, rect)
+				shape = face_utils.shape_to_np(shape)
 
-			#Get blink rate and print on shown image
-			rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
-			cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
+				#Get blink rate and print on shown image
+				rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
+				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
-			frame = drawBox(frame, rect)
+				frame = drawBox(frame, rect)
 			
-			if isDrowsy.mouthOpen(shape) == True:
-				MOUTH_COUNTER += 1
-			else:
-				MOUTH_COUNTER = 0
+				if isDrowsy.mouthOpen(shape) == True:
+					MOUTH_COUNTER += 1
+				else:
+					MOUTH_COUNTER = 0
 			
-			if isDrowsy.eyesClosed(shape) == True:
-				EYE_COUNTER += 1
-			else:
-				EYE_COUNTER = 0
+				if isDrowsy.eyesClosed(shape) == True:
+					EYE_COUNTER += 1
+				else:
+					EYE_COUNTER = 0
 				
-			if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES or MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
-				cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
-					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-				alertUser = True
-			else:
-				sentAlert = False
-				alertUser = False
+				if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES or MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
+					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
+						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+					alertUser = True
+				else:
+					sentAlert = False
+					alertUser = False
 
 		if sentAlert == False and alertUser == True:
 			alerts.alert_value(alertUser)
