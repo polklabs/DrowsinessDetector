@@ -80,9 +80,9 @@ if __name__ == '__main__':
    label = Tkinter.Label(top, text=imageText)
    label.pack()
 
-   top.title("Drowsiness Detector")
-   top.resizable(False, False)
-   top.iconbitmap(default="../assets/icon.ico")
+   #top.title("Drowsiness Detector")
+   #top.resizable(False, False)
+   #top.iconbitmap(default="../assets/icon.ico")
 
    photoPanel = Tkinter.Canvas(top, width = panelWidth, height = panelHeight)
    photoPanel.pack(side = 'top', fill = 'both', expand= 'yes')
