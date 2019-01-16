@@ -112,7 +112,7 @@ def main(webcamSource):
 				shape = face_utils.shape_to_np(shape)
 
 				#Get blink rate and print on shown image
-				rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
+				rate = blinkFreq.checkBlink(shape)
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
@@ -143,8 +143,8 @@ def main(webcamSource):
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
 
-		if key == ord("q"):
-			break
+		#if key == ord("q"):
+			#break
 
 		# count number of frames passed while resetting to 0 when 1 minute is reached
 		totalFrames += 1
