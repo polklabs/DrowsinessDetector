@@ -8,7 +8,7 @@ def sound_alarm(path):
 def alert_value(on_off):
     
     #print("in the function")
-    if(on_off == True):
+    while(on_off == True):
         t = Thread(target=sound_alarm,
                    args=("../assets/alarm.wav",))
         t.deamon = True
