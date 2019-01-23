@@ -1,5 +1,8 @@
 import Tkinter
 import sqlite3
+import sys
+from subprocess import Popen
+
 db = sqlite3.connect('DrowsinessDetectorDatabase')
 
 def createUserTable(database):
@@ -40,6 +43,8 @@ def addNewUser(database, user_info):
         raise e
         database.close()
 
+# Queries database for a certain user
+# Returns None if the user doesn't exist
 def queryUserInfo(database, username):
     try:
         cursor = database.cursor()
@@ -51,6 +56,8 @@ def queryUserInfo(database, username):
         raise e
         database.close()
 
+# Similar to queryUserInfo()
+# Instead, it returns True/False if the user exists/doesn't exist
 def isUserInDatabase(database, username):
     try:
         cursor = database.cursor()
@@ -64,6 +71,7 @@ def isUserInDatabase(database, username):
         raise e
         database.close()
 
+# Prints a list of all the users in the database
 def selectUserNames(database):
     try:
         cursor = database.cursor()
@@ -76,6 +84,7 @@ def selectUserNames(database):
         raise e
         database.close()
 
+# Prints a list of all the passwords in the database
 def selectUserPasswords(database):
     try:
         cursor = database.cursor()
@@ -88,39 +97,51 @@ def selectUserPasswords(database):
         raise e
         database.close()
 
-#dropUserTable(db)
-#createUserTable(db)
-#add_user_task = ("David Sun", "Hello World")
-#addNewUser(db,add_user_task)
-
-def login(database, Username, Password):
+# Tests if a username/password combination is in the database
+def login(database, Username, Password, message):
     try:
         cursor = database.cursor()
         cursor.execute("SELECT * FROM users WHERE name=? AND password=?", (Username,Password))
         user = cursor.fetchone()
         if user != None:
             print "success"
+            message.config(text="Login Successful")
+            # Here, you can probably run start.py
+            p = Popen(["python", "start.py", Username])
             return True
         else:
-            print "nothing"
+            print "failed"
+            message.config(text="Login Failed")
             return False
     except Exception as e:
         database.rollback()
         raise e
         return False
 
-def createNewUser(db, username, password):
+def createNewUser(db, username, password, message):
     add_user_task  = (username,password,)
-    addNewUser(db,add_user_task)
+    if(addNewUser(db,add_user_task)):
+        message.config(text="Register Successful")
+        p = Popen(["python", "start.py", username])
+    else:
+        message.config(text="Register Failed")
 
+# Testing the functions
+
+# dropUserTable(db)
+# createUserTable(db)
+# add_user_task = ("David Sun", "Hello World")
+# addNewUser(db,add_user_task)
 # selectUserIDs(db)
 # selectUserNames(db)
 # selectUserPasswords(db)
 # user = "David Sun"
 # queryUserInfo(db, user)
 # queryUserInfo(db,"test")
+# queryUserInfo(db,"")
 # print findNextAvaliableUserID(db)
 
+# Super basic login GUI
 gui = Tkinter.Tk()
 canvas = Tkinter.Canvas(gui, width=200,height=0)
 canvas.pack()
@@ -134,11 +155,15 @@ f = Tkinter.Entry(gui)
 f.config(show="*")
 f.pack()
 c = Tkinter.Button(gui, text="LOGIN")
-c.config(command=lambda:login(db,e.get(),f.get()))
+c.config(command=lambda:login(db,e.get(),f.get(),login_message))
 c.pack()
 d = Tkinter.Button(gui, text="CREATE ACCOUNT")
-d.config(command=lambda:createNewUser(db,e.get(),f.get()))
+
+login_message = Tkinter.Label(gui)
+d.config(command=lambda:createNewUser(db,e.get(),f.get(), login_message))
 d.pack()
+login_message.pack()
+
 gui.mainloop()
 
 db.commit()
