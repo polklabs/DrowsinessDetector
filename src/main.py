@@ -69,7 +69,7 @@ def main(webcamSource):
 	time.sleep(1.0)
 
 	alertUser = False
-	sentAlert = False
+	#sentAlert = False
 
 	startTime = time.localtime().tm_min
 	minutePassed = False
@@ -125,8 +125,6 @@ def main(webcamSource):
 						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
-					else:
-						sentAlert = False
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
@@ -146,14 +144,14 @@ def main(webcamSource):
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
-				else:
-					sentAlert = False
+				#else:
+				#	sentAlert = False
 					#alertUser = False
 
-		if sentAlert == False and alertUser == True:
-			alerts.alert_value(alertUser)
-			sentAlert = True
-			alertUser = False
+		#if alertUser == True:
+		alerts.alert_value(alertUser)
+			#sentAlert = True
+		alertUser = False
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
