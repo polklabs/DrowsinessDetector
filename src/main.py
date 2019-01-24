@@ -89,7 +89,9 @@ def main(webcamSource):
 				testFailed += 1
 			frame = grabTestFrame()
 
+		frame = cv2.flip(frame, 1)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		
 
 		#Get the faces in the image
 		rects = detector(gray, 0)
