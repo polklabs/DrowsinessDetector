@@ -1,20 +1,25 @@
 from threading import Thread
 import playsound
 
+isPlaying = False
+hasStarted = False
 
 def sound_alarm(path):
-    playsound.playsound(path)
+    global isPlaying
+    while True:
+        if(isPlaying):
+            #print("Starting.")
+            playsound.playsound(path)
+
+t = Thread(target=sound_alarm,
+           args=("../assets/alarm.wav",))
 
 def alert_value(on_off):
-    
-    #print("in the function")
-    while(on_off == True):
-        t = Thread(target=sound_alarm,
-                   args=("../assets/alarm.wav",))
+    global hasStarted, isPlaying
+    isPlaying = on_off
+
+    if(hasStarted == False):
+
         t.deamon = True
         t.start()
-       # sound_alarm("../assets/alarm.wav")
-        
-        
-    elif(on_off == False):
-        return
+        hasStarted = True
