@@ -1,0 +1,107 @@
+import Tkinter
+import pyrebase
+
+from subprocess import Popen
+
+config = {
+  "apiKey": "AIzaSyD6ejYW0EFDNHgTo4Ko1Alk7U4SHTv3Jz0",
+  "authDomain": "drowsiness-detector.firebaseapp.com",
+  "databaseURL": "https://drowsiness-detector.firebaseio.com",
+  "storageBucket": "drowsiness-detector.appspot.com"
+}
+
+email = "cs189bdrowsinessdetector@gmail.com"
+password = "aerospace capstone"
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+user = auth.sign_in_with_email_and_password(email,password)
+db = firebase.database()
+
+def signIntoFirebase(username,password):
+    try:
+        user = auth.sign_in_with_email_and_password(username,password)
+        return user
+    except Exception as e:
+        return None
+
+def createFirebaseAccount(username,password):
+    try:
+        user = auth.create_user_with_email_and_password(username, password)
+        return user
+    except Exception as e:
+        return None
+
+def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
+    data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
+    db.child('users').child(username).set(data,user['idToken'])
+
+def updateUserInfo(username,user,tag,eyeRatio,mouthRatio):
+    data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
+    db.child("users").child(username).update(data,user['idToken'])
+
+def removeUserInfo(username):
+    db.child("users").child(username).remove()
+
+# Returns None if the username doesn't exist in the database
+def getData(username):
+    users = db.child("users").child(username).get()
+    return users.val()
+
+#addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
+#updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3)
+print(getData("cs189bdrowsinessdetector"))
+print(getData("doesn't exist"))
+#removeUserInfo("cs189bdrowsinessdetector")
+
+# Tests if a username/password combination is in the database
+def login(Username, Password, message):
+    try:
+        user = signIntoFirebase(Username,Password)
+        if user != None:
+            print "success"
+            message.config(text="Login Successful")
+            # Here, you can probably run start.py
+            p = Popen(["python", "start.py", Username])
+            return True
+        else:
+            print "failed"
+            message.config(text="Login Failed")
+            return False
+    except Exception as e:
+        raise e
+        return False
+
+def createNewUser(db, username, password, message):
+    add_user_task  = (username,password,)
+    user = createFirebaseAccount(username, password)
+    if(user != None):
+        message.config(text="Register Successful")
+        p = Popen(["python", "start.py", username])
+    else:
+        message.config(text="Register Failed")
+
+# Super basic login GUI
+gui = Tkinter.Tk()
+canvas = Tkinter.Canvas(gui, width=200,height=0)
+canvas.pack()
+a = Tkinter.Label(gui ,text="User Name")
+a.pack()
+b = Tkinter.Label(gui ,text="Password")
+e = Tkinter.Entry(gui)
+e.pack()
+b.pack()
+f = Tkinter.Entry(gui)
+f.config(show="*")
+f.pack()
+c = Tkinter.Button(gui, text="LOGIN")
+c.config(command=lambda:login(db,e.get(),f.get(),login_message))
+c.pack()
+d = Tkinter.Button(gui, text="CREATE ACCOUNT")
+
+login_message = Tkinter.Label(gui)
+d.config(command=lambda:createNewUser(db,e.get(),f.get(), login_message))
+d.pack()
+login_message.pack()
+
+gui.mainloop()
+
