@@ -16,9 +16,11 @@ NOT_MANAGER = "not manager"
 
 email = "cs189bdrowsinessdetector@gmail.com"
 password = "aerospace capstone"
+email2 = "davids0330@gmail.com"
+password2 = "helloworld"
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-user = auth.sign_in_with_email_and_password(email,password)
+user = auth.sign_in_with_email_and_password(email2,password2)
 db = firebase.database()
 
 # parses email to remove everything after the @
@@ -34,6 +36,9 @@ def parseEmail(username):
 
 # print parseEmail("davids0330@gmail.com")
 
+# Attempts to sign into firebase
+# If successful, then it will return user data
+# Otherwise returns None on failure
 def signIntoFirebase(username,password):
     try:
         user = auth.sign_in_with_email_and_password(username,password)
@@ -41,6 +46,10 @@ def signIntoFirebase(username,password):
     except Exception as e:
         return None
 
+# Attempts to create a firebase account
+# Needs a valid email to be successful
+# On success, returns user data
+# On failure, returns None
 def createFirebaseAccount(username,password):
     try:
         user = auth.create_user_with_email_and_password(username, password)
@@ -50,6 +59,7 @@ def createFirebaseAccount(username,password):
 
 # createFirebaseAccount("davids0330@gmail.com","helloworld")
 
+# General function that can create a user in the firebase database given a username and usertoken
 def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
     try:
         data = {"username": username,
@@ -60,6 +70,8 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
         return True
     except Exception as e:
         return False
+
+# addUserInfoToken("cs189bdrowsinessdetector@gmail.com",user,NOT_MANAGER,0.1,0.2)
 
 # This fails because @gmail.com isn't allowed as a firebase pathname
 # addUserInfo("davids0330@gmail.com", user, "is not manager", 0.1,0.1)
@@ -72,6 +84,7 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
 # timestamp = { "1": time.time(),
 #               "2": time.time() }
 timeStampList = [time.time(),time.time(),time.time()]
+
 def createTimeStamp(timeStampList):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
@@ -89,7 +102,6 @@ def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
         return True
     except Exception as e:
         return False
-
 
 def updateEyeRatio(username,user,eyeRatio):
     try:
@@ -118,7 +130,7 @@ def updateTimeStamps(username,user,timestamp):
 
 #updateTimeStamps("davids0330@gmail.com",user,createTimeStamp(timeStampList))
 #updateEyeRatio("davids0330@gmail.com",user,0.3)
-#updateEyeRatio("davids0330@gmail.com",user,0.4)
+
 
 def removeUserInfo(username):
     try:
@@ -168,27 +180,27 @@ def createNewUser(username, password, message):
         message.config(text="Register Failed")
 
 # Super basic login GUI
-gui = Tkinter.Tk()
-canvas = Tkinter.Canvas(gui, width=200,height=0)
-canvas.pack()
-a = Tkinter.Label(gui ,text="User Name")
-a.pack()
-b = Tkinter.Label(gui ,text="Password")
-e = Tkinter.Entry(gui)
-e.pack()
-b.pack()
-f = Tkinter.Entry(gui)
-f.config(show="*")
-f.pack()
-c = Tkinter.Button(gui, text="LOGIN")
-c.config(command=lambda:login(e.get(),f.get(),login_message))
-c.pack()
-d = Tkinter.Button(gui, text="CREATE ACCOUNT")
-
-login_message = Tkinter.Label(gui)
-d.config(command=lambda:createNewUser(e.get(),f.get(), login_message))
-d.pack()
-login_message.pack()
-
-gui.mainloop()
+# gui = Tkinter.Tk()
+# canvas = Tkinter.Canvas(gui, width=200,height=0)
+# canvas.pack()
+# a = Tkinter.Label(gui ,text="User Name")
+# a.pack()
+# b = Tkinter.Label(gui ,text="Password")
+# e = Tkinter.Entry(gui)
+# e.pack()
+# b.pack()
+# f = Tkinter.Entry(gui)
+# f.config(show="*")
+# f.pack()
+# c = Tkinter.Button(gui, text="LOGIN")
+# c.config(command=lambda:login(e.get(),f.get(),login_message))
+# c.pack()
+# d = Tkinter.Button(gui, text="CREATE ACCOUNT")
+#
+# login_message = Tkinter.Label(gui)
+# d.config(command=lambda:createNewUser(e.get(),f.get(), login_message))
+# d.pack()
+# login_message.pack()
+#
+# gui.mainloop()
 
