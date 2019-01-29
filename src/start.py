@@ -57,6 +57,7 @@ def main():
          haveOpened = True
          widget['background'] = 'red'
          widget['text'] = 'STOP'
+         isRunning = True
       else:
          poll = p.poll()
          if (poll == None):
@@ -64,11 +65,13 @@ def main():
             p.kill()
             widget['background'] = 'green'
             widget['text'] = 'START'
+            isRunning = False
          else:
             p = Popen(["python", "button_popen.py", str(webcameraSource)])
             all_processes.append(p)
             widget['background'] = 'red'
             widget['text'] = 'STOP'
+            isRunning = True
 
    # Kills all subprocesses that are running if there are any
    # Also sets isRunning to False so the thread can stop
@@ -90,6 +93,7 @@ def main():
                if isinstance(p,Popen) and p.poll() != None:
                   widget['background'] = 'green'
                   widget['text'] = 'START'
+                  isRunning = False
                   # Honestly a horrible idea.
                   # If the array isn't always size 0 or 1 this could lead to some real issues
                   all_processes.remove(p)
