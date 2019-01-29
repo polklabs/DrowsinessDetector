@@ -17,6 +17,19 @@ auth = firebase.auth()
 user = auth.sign_in_with_email_and_password(email,password)
 db = firebase.database()
 
+# parses email to remove everything after the @
+# this is because firebase doesn't
+# allow @ to be used in the path names
+# (I think, it's either this or the period)
+def parseEmail(username):
+    returnString = ""
+    for x in range(0,len(username)):
+        if (username[x] == "@"):
+            return returnString
+        returnString += username[x]
+
+# print parseEmail("davids0330@gmail.com")
+
 def signIntoFirebase(username,password):
     try:
         user = auth.sign_in_with_email_and_password(username,password)
@@ -32,15 +45,34 @@ def createFirebaseAccount(username,password):
         return None
 
 def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
-    data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
-    db.child('users').child(username).set(data,user['idToken'])
+    try:
+        data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
+        db.child('users').child(username).set(data,user['idToken'])
+        return True
+    except Exception as e:
+        return False
+
+# This fails because @gmail.com isn't allowed as a firebase pathname
+# addUserInfo("davids0330@gmail.com", user, "is not manager", 0.1,0.1)
+
+# This works because parseEmail() will remove the @gmail.com
+# This is a little less reliable if other forms of authentication (ie. Github) is allowed
+addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
 
 def updateUserInfo(username,user,tag,eyeRatio,mouthRatio):
-    data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
-    db.child("users").child(username).update(data,user['idToken'])
+    try:
+        data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
+        db.child("users").child(username).update(data,user['idToken'])
+        return True
+    except Exception as e:
+        return False
 
 def removeUserInfo(username):
-    db.child("users").child(username).remove()
+    try:
+        db.child("users").child(username).remove()
+        return True
+    except Exception as e:
+        return False
 
 # Returns None if the username doesn't exist in the database
 def getData(username):
@@ -49,8 +81,8 @@ def getData(username):
 
 #addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
 #updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3)
-print(getData("cs189bdrowsinessdetector"))
-print(getData("doesn't exist"))
+#print(getData("cs189bdrowsinessdetector"))
+#print(getData("doesn't exist"))
 #removeUserInfo("cs189bdrowsinessdetector")
 
 # Tests if a username/password combination is in the database
@@ -94,12 +126,12 @@ f = Tkinter.Entry(gui)
 f.config(show="*")
 f.pack()
 c = Tkinter.Button(gui, text="LOGIN")
-c.config(command=lambda:login(db,e.get(),f.get(),login_message))
+c.config(command=lambda:login(e.get(),f.get(),login_message))
 c.pack()
 d = Tkinter.Button(gui, text="CREATE ACCOUNT")
 
 login_message = Tkinter.Label(gui)
-d.config(command=lambda:createNewUser(db,e.get(),f.get(), login_message))
+d.config(command=lambda:createNewUser(e.get(),f.get(), login_message))
 d.pack()
 login_message.pack()
 
