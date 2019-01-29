@@ -72,6 +72,7 @@ def main():
 	totalFrames = 0
         x = 0
         totalEyeAspectRatio = 0.0
+        totalMouthAspectRatio = 0.0
         
         ###########
         # analysis should be over 10 seconds    
@@ -110,6 +111,18 @@ def main():
                                 x = x + 1
 				frame = drawBox(frame, rect)
 
+				# extract mouth coordinates
+				mouthTop = shape[51]
+                                mouthBot = shape[57]
+                                mouthLeft = shape[54]
+                                mouthRight = shape[48]
+	
+                                A = dist.euclidean(mouthTop, mouthBot)
+                                B = dist.euclidean(mouthLeft, mouthRight)
+	
+                                mouth_ar = (A) / (2.0 * B)
+                                totalMouthAspectRatio = totalMouthAspectRatio + mouth_ar
+
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
@@ -120,7 +133,9 @@ def main():
                 # need to exit after 10 seconds of analysis?
                 
         averageEyeAspectRatio = totalEyeAspectRatio/100
+        averageMouthAspectRatio = totalMouthAspectRatio/100
         print(averageEyeAspectRatio)
+        print(averageMouthAspectRatio)
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
 	vs.stop()
