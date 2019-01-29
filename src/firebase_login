@@ -90,6 +90,36 @@ def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
     except Exception as e:
         return False
 
+
+def updateEyeRatio(username,user,eyeRatio):
+    try:
+        data = {"username": username,
+                "eye ratio": eyeRatio}
+        db.child("users").child(parseEmail(username)).update(data, user['idToken'])
+        return True
+    except Exception as e:
+        return False
+
+def updateMouthRatio(username,user,mouthRatio):
+    try:
+        data = {"username": username,
+                "mouth ratio": mouthRatio}
+        db.child("users").child(parseEmail(username)).update(data, user['idToken'])
+        return True
+    except Exception as e:
+        return False
+
+def updateTimeStamps(username,user,timestamp):
+    try:
+        db.child("users").child(parseEmail(username)).child("timestamp").update(timestamp,user['idToken'])
+        return True
+    except Exception as e:
+        return False
+
+#updateTimeStamps("davids0330@gmail.com",user,createTimeStamp(timeStampList))
+#updateEyeRatio("davids0330@gmail.com",user,0.3)
+#updateEyeRatio("davids0330@gmail.com",user,0.4)
+
 def removeUserInfo(username):
     try:
         db.child("users").child(username).remove()
