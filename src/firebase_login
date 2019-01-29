@@ -1,5 +1,6 @@
 import Tkinter
 import pyrebase
+import time
 
 from subprocess import Popen
 
@@ -48,8 +49,11 @@ def createFirebaseAccount(username,password):
 
 def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
     try:
-        data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
-        db.child('users').child(username).set(data,user['idToken'])
+        data = {"username": username,
+                "tag":tag ,
+                "eye ratio":eyeRatio,
+                "mouth ratio":mouthRatio,}
+        db.child('users').child(parseEmail(username)).set(data,user['idToken'])
         return True
     except Exception as e:
         return False
@@ -59,12 +63,26 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
 
 # This works because parseEmail() will remove the @gmail.com
 # This is a little less reliable if other forms of authentication (ie. Github) is allowed
-addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
+#addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
 
-def updateUserInfo(username,user,tag,eyeRatio,mouthRatio):
+
+# timestamp = { "1": time.time(),
+#               "2": time.time() }
+timeStampList = [time.time(),time.time(),time.time()]
+def createTimeStamp(timeStampList):
+    timeStamp = {}
+    for x in range(0,len(timeStampList)):
+        timeStamp.update({str(x):timeStampList[x]})
+    return timeStamp
+
+def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
     try:
-        data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
-        db.child("users").child(username).update(data,user['idToken'])
+        data = {"username": username,
+                "tag": tag,
+                "eye ratio": eyeRatio,
+                "mouth ratio": mouthRatio,
+                "timestamp": timestamp}
+        db.child("users").child(parseEmail(username)).update(data,user['idToken'])
         return True
     except Exception as e:
         return False
@@ -77,15 +95,17 @@ def removeUserInfo(username):
         return False
 
 # Returns None if the username doesn't exist in the database
+# Currently theres some unintentional collision if you have emails that have the same name
 def getData(username):
-    users = db.child("users").child(username).get()
+    users = db.child("users").child(parseEmail(username)).get()
     return users.val()
 
 #addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
-#updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3)
+#updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3, timestamp)
 #print(getData("cs189bdrowsinessdetector"))
 #print(getData("doesn't exist"))
 #removeUserInfo("cs189bdrowsinessdetector")
+#updateUserInfo("davids0330@gmail.com", user, "not manager", 0.2,0.3, createTimeStamp(timeStampList))
 
 # Tests if a username/password combination is in the database
 def login(Username, Password, message):
