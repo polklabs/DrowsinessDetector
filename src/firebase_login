@@ -85,6 +85,9 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
 #               "2": time.time() }
 timeStampList = [time.time(),time.time(),time.time()]
 
+# TO DO: Starting at 0 everytime will definitely be an issue in the future
+# Since all dictionary keys have to be unique
+# Fix it so that it starts at reasonable value?
 def createTimeStamp(timeStampList):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
@@ -141,14 +144,20 @@ def removeUserInfo(username):
 
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name
+# Normally I wouldn't have to return None
+# But there could be some permissions error so it is safer to do so anyways
 def getData(username,user):
-    users = db.child("users").child(parseEmail(username)).get(user['idToken'])
-    return users.val()
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()
+    except Exception as e:
+        return None
 
 #addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
 #updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3, timestamp)
 # get all data
-print(getData("davids0330@gmail.com",user))
+# print(getData("davids0330@gmail.com",user))
+# print(getData(email,user))
 # Example:get username
 print(getData("davids0330@gmail.com",user)["username"])
 #print(getData("doesn't exist"))
