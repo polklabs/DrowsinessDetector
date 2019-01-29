@@ -11,6 +11,9 @@ config = {
   "storageBucket": "drowsiness-detector.appspot.com"
 }
 
+IS_MANAGER = "is manager"
+NOT_MANAGER = "not manager"
+
 email = "cs189bdrowsinessdetector@gmail.com"
 password = "aerospace capstone"
 firebase = pyrebase.initialize_app(config)
