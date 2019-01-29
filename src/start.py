@@ -15,6 +15,9 @@ if __name__ == '__main__':
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"
    A_LOGO = "../assets/A_logo.jpg"
+   ######################
+   ######################
+   #### need initialize to return webcam AND user account
    webcameraSource = initialize.initialize()
    all_processes = []
    panelHeight = 250

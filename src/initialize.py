@@ -33,6 +33,13 @@ def initialize():
 			return False
 		return True
 
+        #################
+        # create user accounts
+
+        
+
+
+	#################
 	for i in range(2):
 		if testDevice(i):
 			print("OK\nUsing webcam "+str(i)+"\n")
