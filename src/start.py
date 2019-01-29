@@ -3,13 +3,25 @@ import initialize
 # Unique button process class
 from subprocess import Popen
 import atexit
+import sys
 
 # Have a button that starts the program
 import Tkinter
 from threading import Thread
 from PIL import Image, ImageTk
 
-if __name__ == '__main__':
+
+def main():
+   global isRunning
+   global all_processes
+   global haveOpened
+   global p, all_processes
+   username = ""
+   try:
+      username = sys.argv[1]
+      print username
+   except IndexError as e:
+      print "No Username"
 
    haveOpened = False
    isRunning = True
@@ -110,7 +122,3 @@ if __name__ == '__main__':
    t.start()
 
    top.mainloop()
-
-
-
-

@@ -10,6 +10,7 @@ import dlib #For detecting faces and features
 import alerts
 import isDrowsy #For testing
 import blinkFreq
+import time
 
 testing = False
 test = 0
@@ -68,7 +69,10 @@ def main(webcamSource):
 	time.sleep(1.0)
 
 	alertUser = False
-	sentAlert = False
+	#sentAlert = False
+
+	startTime = time.localtime().tm_min
+	minutePassed = False
 
 	EYE_COUNTER = 0
 	MOUTH_COUNTER = 0
@@ -85,7 +89,9 @@ def main(webcamSource):
 				testFailed += 1
 			frame = grabTestFrame()
 
+		frame = cv2.flip(frame, 1)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		
 
 		#Get the faces in the image
 		rects = detector(gray, 0)
@@ -112,7 +118,15 @@ def main(webcamSource):
 				shape = face_utils.shape_to_np(shape)
 
 				#Get blink rate and print on shown image
-				rate = blinkFreq.checkBlink(shape, frameRate, totalFrames)
+				rate = blinkFreq.checkBlink(shape)
+				if minutePassed is False:
+					if time.localtime().tm_min - startTime >= 1:
+						minutePassed = True
+				else:
+					if rate >= 25 or rate <= 10:
+						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
+							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+						alertUser = True
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
@@ -132,19 +146,20 @@ def main(webcamSource):
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
-				else:
-					sentAlert = False
-					alertUser = False
+				#else:
+				#	sentAlert = False
+					#alertUser = False
 
-		if sentAlert == False and alertUser == True:
-			alerts.alert_value(alertUser)
-			sentAlert = True
+		#if alertUser == True:
+		alerts.alert_value(alertUser)
+			#sentAlert = True
+		alertUser = False
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
 
-		if key == ord("q"):
-			break
+		#if key == ord("q"):
+			#break
 
 		# count number of frames passed while resetting to 0 when 1 minute is reached
 		totalFrames += 1
