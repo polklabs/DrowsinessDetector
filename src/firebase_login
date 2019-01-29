@@ -20,7 +20,7 @@ email2 = "davids0330@gmail.com"
 password2 = "helloworld"
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-user = auth.sign_in_with_email_and_password(email2,password2)
+user = auth.sign_in_with_email_and_password(email,password)
 db = firebase.database()
 
 # parses email to remove everything after the @
@@ -141,13 +141,16 @@ def removeUserInfo(username):
 
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name
-def getData(username):
-    users = db.child("users").child(parseEmail(username)).get()
+def getData(username,user):
+    users = db.child("users").child(parseEmail(username)).get(user['idToken'])
     return users.val()
 
 #addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
 #updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3, timestamp)
-#print(getData("cs189bdrowsinessdetector"))
+# get all data
+print(getData("davids0330@gmail.com",user))
+# Example:get username
+print(getData("davids0330@gmail.com",user)["username"])
 #print(getData("doesn't exist"))
 #removeUserInfo("cs189bdrowsinessdetector")
 #updateUserInfo("davids0330@gmail.com", user, "not manager", 0.2,0.3, createTimeStamp(timeStampList))
