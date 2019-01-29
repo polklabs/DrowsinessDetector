@@ -15,13 +15,23 @@ if __name__ == '__main__':
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"
    A_LOGO = "../assets/A_logo.jpg"
-   ######################
-   ######################
-   #### need initialize to return webcam AND user account
    webcameraSource = initialize.initialize()
    all_processes = []
    panelHeight = 250
    panelWidth = 250
+
+   ######################
+   # USER ACCOUNT FUNCTIONALITY GOES HERE
+
+        # create user accounts
+        # probably want to create seperate file useraccounts.py
+        # file will load pre-exisiting account or create a new one
+        # upon creation of a new account will call calibration step
+        # this step will analyze mouth & eyes for new aspect ratios
+        # will return those values (somehow get those values into our functionality??)
+
+   ######################
+   ######################
 
    # Things that the button does on click
    # Runs a subprocess if there isn't one running
