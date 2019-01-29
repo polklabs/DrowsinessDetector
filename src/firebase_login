@@ -44,6 +44,8 @@ def createFirebaseAccount(username,password):
     except Exception as e:
         return None
 
+# createFirebaseAccount("davids0330@gmail.com","helloworld")
+
 def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
     try:
         data = {"username": username,"tag":tag , "eye ratio":eyeRatio, "mouth ratio":mouthRatio}
@@ -103,7 +105,7 @@ def login(Username, Password, message):
         raise e
         return False
 
-def createNewUser(db, username, password, message):
+def createNewUser(username, password, message):
     add_user_task  = (username,password,)
     user = createFirebaseAccount(username, password)
     if(user != None):
