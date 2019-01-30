@@ -191,28 +191,4 @@ def createNewUser(username, password, message):
     else:
         message.config(text="Register Failed")
 
-# Super basic login GUI
-# gui = Tkinter.Tk()
-# canvas = Tkinter.Canvas(gui, width=200,height=0)
-# canvas.pack()
-# a = Tkinter.Label(gui ,text="User Name")
-# a.pack()
-# b = Tkinter.Label(gui ,text="Password")
-# e = Tkinter.Entry(gui)
-# e.pack()
-# b.pack()
-# f = Tkinter.Entry(gui)
-# f.config(show="*")
-# f.pack()
-# c = Tkinter.Button(gui, text="LOGIN")
-# c.config(command=lambda:login(e.get(),f.get(),login_message))
-# c.pack()
-# d = Tkinter.Button(gui, text="CREATE ACCOUNT")
-#
-# login_message = Tkinter.Label(gui)
-# d.config(command=lambda:createNewUser(e.get(),f.get(), login_message))
-# d.pack()
-# login_message.pack()
-#
-# gui.mainloop()
 
