@@ -62,21 +62,22 @@ def createFirebaseAccount(username,password):
 # General function that can create a user in the firebase database given a username and usertoken
 def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
     try:
+        timestamp = {"First Created": time.time()}
         data = {"username": username,
                 "tag":tag ,
+                "current timestamp":0,
                 "eye ratio":eyeRatio,
-                "mouth ratio":mouthRatio,}
+                "mouth ratio":mouthRatio,
+                "timestamp":timestamp}
         db.child('users').child(parseEmail(username)).set(data,user['idToken'])
         return True
     except Exception as e:
         return False
 
-# addUserInfoToken("cs189bdrowsinessdetector@gmail.com",user,NOT_MANAGER,0.1,0.2)
+# addUserInfo("cs189bdrowsinessdetector@gmail.com",user,NOT_MANAGER,0.1,0.2)
+#
+# addUserInfo("davids0330@gmail.com", user, NOT_MANAGER, 0.1,0.1)
 
-# This fails because @gmail.com isn't allowed as a firebase pathname
-# addUserInfo("davids0330@gmail.com", user, "is not manager", 0.1,0.1)
-
-# This works because parseEmail() will remove the @gmail.com
 # This is a little less reliable if other forms of authentication (ie. Github) is allowed
 #addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
 
@@ -88,10 +89,10 @@ timeStampList = [time.time(),time.time(),time.time()]
 # TO DO: Starting at 0 everytime will definitely be an issue in the future
 # Since all dictionary keys have to be unique
 # Fix it so that it starts at reasonable value?
-def createTimeStamp(timeStampList):
+def createTimeStamp(timeStampList, start):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
-        timeStamp.update({str(x):timeStampList[x]})
+        timeStamp.update({str(x+start):timeStampList[x]})
     return timeStamp
 
 def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
@@ -124,24 +125,6 @@ def updateMouthRatio(username,user,mouthRatio):
     except Exception as e:
         return False
 
-def updateTimeStamps(username,user,timestamp):
-    try:
-        db.child("users").child(parseEmail(username)).child("timestamp").update(timestamp,user['idToken'])
-        return True
-    except Exception as e:
-        return False
-
-#updateTimeStamps("davids0330@gmail.com",user,createTimeStamp(timeStampList))
-#updateEyeRatio("davids0330@gmail.com",user,0.3)
-
-
-def removeUserInfo(username):
-    try:
-        db.child("users").child(username).remove()
-        return True
-    except Exception as e:
-        return False
-
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name
 # Normally I wouldn't have to return None
@@ -153,13 +136,49 @@ def getData(username,user):
     except Exception as e:
         return None
 
+def updateTimeStamps(username,user,timestampList):
+    try:
+        userdata = getData(username,user)
+        userdataTimeStamps = {}
+        startTimeStamp = userdata["current timestamp"]
+        # if (startTimeStamp != 0):
+        userdataTimeStamps.update(userdata["timestamp"])
+        timestamp = createTimeStamp(timeStampList,startTimeStamp)
+        userdataTimeStamps.update(timestamp)
+        data =  {"username":userdata["username"],
+                 "eye ratio":userdata["eye ratio"],
+                 "mouth ratio":userdata["mouth ratio"],
+                 "tag":userdata["tag"],
+                 "current timestamp":startTimeStamp+len(timestampList)}
+        db.child("users").child(parseEmail(username)).set(data,user['idToken'])
+        db.child("users").child(parseEmail(username)).child("timestamp").set(userdataTimeStamps,user['idToken'])
+        return True
+    except Exception as e:
+        raise e
+        return False
+
+# addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
+
+#db.child("users").child(parseEmail(email2)).update({"current timestamp":0},user['idToken'])
+if(updateTimeStamps("davids0330@gmail.com",user,timeStampList)):
+    print "successful"
+#updateEyeRatio("davids0330@gmail.com",user,0.3)
+
+
+def removeUserInfo(username):
+    try:
+        db.child("users").child(username).remove()
+        return True
+    except Exception as e:
+        return False
+
 #addUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.1,0.2)
 #updateUserInfo("cs189bdrowsinessdetector", user, "not manager", 0.2,0.3, timestamp)
 # get all data
 # print(getData("davids0330@gmail.com",user))
 # print(getData(email,user))
 # Example:get username
-print(getData("davids0330@gmail.com",user)["username"])
+#print(getData("davids0330@gmail.com",user)["username"])
 #print(getData("doesn't exist"))
 #removeUserInfo("cs189bdrowsinessdetector")
 #updateUserInfo("davids0330@gmail.com", user, "not manager", 0.2,0.3, createTimeStamp(timeStampList))
