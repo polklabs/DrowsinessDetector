@@ -73,15 +73,19 @@ def main():
         x = 0
         totalEyeAspectRatio = 0.0
         totalMouthAspectRatio = 0.0
-        
-        ###########
-        # analysis should be over 10 seconds    
-        ########
-	while x < 100:
+
+        while x < 200:
 
 		frame = grabFrame(vs)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+
+                cv2.putText(frame, "Blink normally and keep mouth open", (10, 325), 
+		    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+                if x == 0:
+                    time.sleep(10)
+                
+                
 		#Get the faces in the image
 		rects = detector(gray, 0)
 
@@ -129,11 +133,9 @@ def main():
 
 		if key == ord("q"):
 			break
-
-                # need to exit after 10 seconds of analysis?
                 
-        averageEyeAspectRatio = totalEyeAspectRatio/100
-        averageMouthAspectRatio = totalMouthAspectRatio/100
+        averageEyeAspectRatio = totalEyeAspectRatio/200
+        averageMouthAspectRatio = totalMouthAspectRatio/200
         print(averageEyeAspectRatio)
         print(averageMouthAspectRatio)
 	# do a bit of cleanup
