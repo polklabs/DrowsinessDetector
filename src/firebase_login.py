@@ -1,4 +1,3 @@
-import Tkinter
 import pyrebase
 import time
 import re
@@ -136,6 +135,9 @@ def getUserData(username, user):
         return users.val()
     except Exception as e:
         return None
+
+# val = getUserData(email, user)
+# print val
 
 def getAllData(user):
     try:

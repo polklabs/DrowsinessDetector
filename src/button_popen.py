@@ -5,4 +5,6 @@ import sys
 
 if __name__ == '__main__':
     webcamSource = int(sys.argv[1])
-    main.main(webcamSource)
+    username = sys.argv[2]
+    user = sys.argv[3]
+    main.main(webcamSource,username,user)
