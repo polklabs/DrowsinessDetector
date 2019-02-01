@@ -11,13 +11,13 @@ from threading import Thread
 from PIL import Image, ImageTk
 import firebase_login
 
-def main(username, user_token):
+def main(username, password):
    global isRunning
    global all_processes
    global haveOpened
    global p, all_processes
    global user
-   print(firebase_login.getUserData(username,user_token))	
+   print(firebase_login.getUserData(username,password))	
    haveOpened = False
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"

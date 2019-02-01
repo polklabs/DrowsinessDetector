@@ -106,7 +106,7 @@ def login_verify():
 		#verify = file1.read().splitlines()
 	#if password1 in verify:
 	if user != None:	
-		login_sucess(username1, user)
+		login_sucess(username1, password1)
 	else:
 		password_not_recognised()
  
@@ -115,13 +115,13 @@ def login_verify():
  
 # Designing popup for login success
  
-def login_sucess(username, user_token):
+def login_sucess(username, password):
 	global login_success_screen
 	login_success_screen = Tkinter.Toplevel(login_screen)
 	login_success_screen.title("Success")
 	login_success_screen.geometry("150x100")
 	Tkinter.Label(login_success_screen, text="Login Success").pack()
-	Tkinter.Button(login_success_screen, text="OK", command=delete_login_success(username, user_token)).pack()
+	Tkinter.Button(login_success_screen, text="OK", command=delete_login_success(username, password)).pack()
  
 # Designing popup for login invalid password
  
@@ -145,11 +145,11 @@ def user_not_found():
  
 # Deleting popups
 
-def delete_login_success(username, user_token):
+def delete_login_success(username, password):
 	login_success_screen.destroy()
 	login_screen.destroy()
 	main_screen.destroy()
-	start.main(username, user_token)
+	start.main(username, password)
 	exit(1)
 	
  
