@@ -11,7 +11,7 @@ from threading import Thread
 from PIL import Image, ImageTk
 import firebase_login
 
-def main(username, user_token):
+def main(username, password):
    global isRunning
    global all_processes
    global haveOpened
@@ -47,7 +47,7 @@ def main(username, user_token):
       global haveOpened
       if(haveOpened == False):
          global p, all_processes
-         p = Popen(["python", "button_popen.py", str(webcameraSource), username, user_token])
+         p = Popen(["python", "button_popen.py", str(webcameraSource), username, password])
          all_processes.append(p)
          haveOpened = True
          widget['background'] = 'red'
@@ -62,7 +62,7 @@ def main(username, user_token):
             widget['text'] = 'START'
             isRunning = False
          else:
-            p = Popen(["python", "button_popen.py", str(webcameraSource), username, user_token])
+            p = Popen(["python", "button_popen.py", str(webcameraSource), username, password])
             all_processes.append(p)
             widget['background'] = 'red'
             widget['text'] = 'STOP'
