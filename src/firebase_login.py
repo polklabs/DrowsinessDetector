@@ -145,7 +145,7 @@ def getAllData(user):
         raise e
         return None
 
-print(getAllData(user))
+# print(getAllData(user))
 
 def updateTimeStamps(username,user,timestampList):
     try:
@@ -194,31 +194,5 @@ def removeUserInfo(username):
 #removeUserInfo("cs189bdrowsinessdetector")
 #updateUserInfo("davids0330@gmail.com", user, "not manager", 0.2,0.3, createTimeStamp(timeStampList))
 
-# Tests if a username/password combination is in the database
-def login(Username, Password, message):
-    try:
-        user = signIntoFirebase(Username,Password)
-        if user != None:
-            print "success"
-            message.config(text="Login Successful")
-            # Here, you can probably run start.py
-            p = Popen(["python", "start.py", Username])
-            return True
-        else:
-            print "failed"
-            message.config(text="Login Failed")
-            return False
-    except Exception as e:
-        raise e
-        return False
-
-def createNewUser(username, password, message):
-    add_user_task  = (username,password,)
-    user = createFirebaseAccount(username, password)
-    if(user != None):
-        message.config(text="Register Successful")
-        p = Popen(["python", "start.py", username])
-    else:
-        message.config(text="Register Failed")
 
 
