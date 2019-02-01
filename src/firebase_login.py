@@ -130,16 +130,26 @@ def updateMouthRatio(username,user,mouthRatio):
 # Currently theres some unintentional collision if you have emails that have the same name
 # Normally I wouldn't have to return None
 # But there could be some permissions error so it is safer to do so anyways
-def getData(username,user):
+def getUserData(username, user):
     try:
         users = db.child("users").child(parseEmail(username)).get(user['idToken'])
         return users.val()
     except Exception as e:
         return None
 
+def getAllData(user):
+    try:
+        users = db.child("users").get(user['idToken'])
+        return users.val()
+    except Exception as e:
+        raise e
+        return None
+
+print(getAllData(user))
+
 def updateTimeStamps(username,user,timestampList):
     try:
-        userdata = getData(username,user)
+        userdata = getUserData(username, user)
         userdataTimeStamps = {}
         startTimeStamp = userdata["current timestamp"]
         # if (startTimeStamp != 0):
