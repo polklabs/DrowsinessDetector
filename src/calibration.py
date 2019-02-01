@@ -21,7 +21,7 @@ def grabFrame(vs):
 	frame = vs.read()
 	frame = imutils.resize(frame, width=450)
 	return frame
-    
+	
 #Draw a box over the face in the displayed feed
 def drawBox(frame, rect):
 	x1, y1, x2, y2, w, h = rect.left(), rect.top(), rect.right() + 1, rect.bottom()+1, rect.width(), rect.height()
@@ -70,22 +70,21 @@ def main():
 	EYE_COUNTER = 0
 	MOUTH_COUNTER = 0
 	totalFrames = 0
-        x = 0
-        totalEyeAspectRatio = 0.0
-        totalMouthAspectRatio = 0.0
+	x = 0
+	totalEyeAspectRatio = 0.0
+	totalMouthAspectRatio = 0.0
 
-        while x < 200:
+	while x < 200:
 
 		frame = grabFrame(vs)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 
-                cv2.putText(frame, "Blink normally and keep mouth open", (10, 325), 
-		    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-                if x == 0:
-                    time.sleep(10)
-                
-                
+		cv2.putText(frame, "Blink normally and keep mouth open", (10, 325), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+		if x == 0:
+			time.sleep(10)
+				
+				
 		#Get the faces in the image
 		rects = detector(gray, 0)
 
@@ -102,30 +101,30 @@ def main():
 				shape = predictor(gray, rect)
 				shape = face_utils.shape_to_np(shape)
 
-                                # extract the left and right eye coordinates, then use the
-                                # coordinates to compute the eye aspect ratio for both eyes
-                                leftEye = shape[lStart:lEnd]
-                                rightEye = shape[rStart:rEnd]
-                                leftEAR = eye_aspect_ratio(leftEye)
-                                rightEAR = eye_aspect_ratio(rightEye)
+				# extract the left and right eye coordinates, then use the
+				# coordinates to compute the eye aspect ratio for both eyes
+				leftEye = shape[lStart:lEnd]
+				rightEye = shape[rStart:rEnd]
+				leftEAR = eye_aspect_ratio(leftEye)
+				rightEAR = eye_aspect_ratio(rightEye)
 
-                                # average the eye aspect ratio together for both eyes
-                                ear = (leftEAR + rightEAR) / 2.0
-                                totalEyeAspectRatio = totalEyeAspectRatio + ear
-                                x = x + 1
+				# average the eye aspect ratio together for both eyes
+				ear = (leftEAR + rightEAR) / 2.0
+				totalEyeAspectRatio = totalEyeAspectRatio + ear
+				x = x + 1
 				frame = drawBox(frame, rect)
 
 				# extract mouth coordinates
 				mouthTop = shape[51]
-                                mouthBot = shape[57]
-                                mouthLeft = shape[54]
-                                mouthRight = shape[48]
-	
-                                A = dist.euclidean(mouthTop, mouthBot)
-                                B = dist.euclidean(mouthLeft, mouthRight)
-	
-                                mouth_ar = (A) / (2.0 * B)
-                                totalMouthAspectRatio = totalMouthAspectRatio + mouth_ar
+				mouthBot = shape[57]
+				mouthLeft = shape[54]
+				mouthRight = shape[48]
+
+				A = dist.euclidean(mouthTop, mouthBot)
+				B = dist.euclidean(mouthLeft, mouthRight)
+
+				mouth_ar = (A) / (2.0 * B)
+				totalMouthAspectRatio = totalMouthAspectRatio + mouth_ar
 
 
 		cv2.imshow("Frame", frame)
@@ -133,12 +132,17 @@ def main():
 
 		if key == ord("q"):
 			break
-                
-        averageEyeAspectRatio = totalEyeAspectRatio/200
-        averageMouthAspectRatio = totalMouthAspectRatio/200
-        print(averageEyeAspectRatio)
-        print(averageMouthAspectRatio)
+				
+	averageEyeAspectRatio = totalEyeAspectRatio/200
+	averageMouthAspectRatio = totalMouthAspectRatio/200
+	print(averageEyeAspectRatio)
+	print(averageMouthAspectRatio)
+		
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
 	vs.stop()
-main()
+	return [averageEyeAspectRatio, averageMouthAspectRatio]
+	# do a bit of cleanup
+	# cv2.destroyAllWindows()
+	# vs.stop()
+#main()

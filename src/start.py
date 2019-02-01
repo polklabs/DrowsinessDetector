@@ -9,22 +9,16 @@ import sys
 import Tkinter
 from threading import Thread
 from PIL import Image, ImageTk
+import firebase_login
 
-
-def main():
+def main(username, user_token):
    global isRunning
    global all_processes
    global haveOpened
    global p, all_processes
    username = ""
    global user
-   try:
-      username = sys.argv[1]
-      user = sys.argv[2]
-      print username
-   except IndexError as e:
-      print "No Username"
-
+   print(firebase_login.getUserData(username,user_token))	
    haveOpened = False
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"
