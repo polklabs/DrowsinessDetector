@@ -1,6 +1,7 @@
 import Tkinter
 import pyrebase
 import time
+import re
 
 from subprocess import Popen
 
@@ -28,11 +29,11 @@ db = firebase.database()
 # allow @ to be used in the path names
 # (I think, it's either this or the period)
 def parseEmail(username):
-    returnString = ""
-    for x in range(0,len(username)):
-        if (username[x] == "@"):
-            return returnString
-        returnString += username[x]
+    # returnString = ""
+    # for x in range(0,len(username)):
+    #     if (username[x] != "@" and username[x] != "."):
+    #         returnString += username[x]
+    return re.sub(r'\W+', '', username)
 
 # print parseEmail("davids0330@gmail.com")
 
@@ -159,10 +160,10 @@ def updateTimeStamps(username,user,timestampList):
 
 # addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
 
-#db.child("users").child(parseEmail(email2)).update({"current timestamp":0},user['idToken'])
-if(updateTimeStamps("davids0330@gmail.com",user,timeStampList)):
-    print "successful"
-#updateEyeRatio("davids0330@gmail.com",user,0.3)
+# db.child("users").child(parseEmail(email2)).update({"current timestamp":0},user['idToken'])
+# if(updateTimeStamps("davids0330@gmail.com",user,timeStampList)):
+#     print "successful"
+# updateEyeRatio("davids0330@gmail.com",user,0.3)
 
 
 def removeUserInfo(username):
