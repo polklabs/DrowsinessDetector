@@ -16,7 +16,6 @@ def main(username, user_token):
    global all_processes
    global haveOpened
    global p, all_processes
-   username = ""
    global user
    print(firebase_login.getUserData(username,user_token))	
    haveOpened = False
