@@ -17,8 +17,10 @@ def main():
    global haveOpened
    global p, all_processes
    username = ""
+   global user
    try:
       username = sys.argv[1]
+      user = sys.argv[2]
       print username
    except IndexError as e:
       print "No Username"
