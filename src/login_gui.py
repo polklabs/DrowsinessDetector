@@ -24,7 +24,7 @@ def register():
  
 	Tkinter.Label(register_screen, text="Please enter details below", bg="blue").pack()
 	Tkinter.Label(register_screen, text="").pack()
-	username_lable = Tkinter.Label(register_screen, text="Username * ")
+	username_lable = Tkinter.Label(register_screen, text="Email * ")
 	username_lable.pack()
 	username_entry = Tkinter.Entry(register_screen, textvariable=username)
 	username_entry.pack()
@@ -55,7 +55,7 @@ def login():
 	global username_login_entry
 	global password_login_entry
  
-	Tkinter.Label(login_screen, text="Username * ").pack()
+	Tkinter.Label(login_screen, text="Email * ").pack()
 	username_login_entry = Tkinter.Entry(login_screen, textvariable=username_verify)
 	username_login_entry.pack()
 	Tkinter.Label(login_screen, text="").pack()
