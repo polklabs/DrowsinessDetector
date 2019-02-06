@@ -129,6 +129,7 @@ def main(webcamSource,username,password):
 						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
+						#Update firebase here
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
@@ -148,20 +149,16 @@ def main(webcamSource,username,password):
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
+					#Update firebase here
 				#else:
 				#	sentAlert = False
 					#alertUser = False
 
-		#if alertUser == True:
 		alerts.alert_value(alertUser)
-			#sentAlert = True
 		alertUser = False
 
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
-
-		#if key == ord("q"):
-			#break
 
 		# count number of frames passed while resetting to 0 when 1 minute is reached
 		totalFrames += 1

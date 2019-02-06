@@ -17,7 +17,6 @@ def main(username, password):
    global haveOpened
    global p, all_processes
    global user
-   # print(firebase_login.getUserData(username,user_token))
    haveOpened = False
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"

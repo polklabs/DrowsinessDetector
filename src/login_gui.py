@@ -66,7 +66,6 @@ def login():
     Tkinter.Label(login_screen, text="").pack()
     Tkinter.Button(login_screen, text="Login", width=10, height=1, command=login_verify).pack()
 
-
 def exit_gui():
     main_screen.destroy()
     exit(1)
@@ -127,6 +126,7 @@ def login_sucess(username, password):
     Tkinter.Button(login_success_screen, text="OK", command=delete_login_success(username, password)).pack()
 
 
+
 # Designing popup for login invalid password
 
 def password_not_recognised():
@@ -157,7 +157,6 @@ def delete_login_success(username, password):
     main_screen.destroy()
     start.main(username, password)
     exit(1)
-
 
 def delete_password_not_recognised():
     password_not_recog_screen.destroy()

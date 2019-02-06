@@ -140,7 +140,7 @@ def main():
 		
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
-	vs.stop()
+	vs.stop()#'''Doesn't properly close the webcam. It crashes the program if you try and start it after registering'''
 	return [averageEyeAspectRatio, averageMouthAspectRatio]
 	# do a bit of cleanup
 	# cv2.destroyAllWindows()
