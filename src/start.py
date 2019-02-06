@@ -17,7 +17,6 @@ def main(username, password):
    global haveOpened
    global p, all_processes
    global user
-   print(firebase_login.getUserData(username,password))	
    haveOpened = False
    isRunning = True
    AEROSPACE_LOGO = "../assets/logo.png"
@@ -47,7 +46,7 @@ def main(username, password):
       global haveOpened
       if(haveOpened == False):
          global p, all_processes
-         p = Popen(["python", "button_popen.py", str(webcameraSource)])
+         p = Popen(["python", "button_popen.py", str(webcameraSource), username, password])
          all_processes.append(p)
          haveOpened = True
          widget['background'] = 'red'
@@ -62,7 +61,7 @@ def main(username, password):
             widget['text'] = 'START'
             isRunning = False
          else:
-            p = Popen(["python", "button_popen.py", str(webcameraSource)])
+            p = Popen(["python", "button_popen.py", str(webcameraSource), username, password])
             all_processes.append(p)
             widget['background'] = 'red'
             widget['text'] = 'STOP'
