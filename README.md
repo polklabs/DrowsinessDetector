@@ -5,6 +5,8 @@ Our program aims to alert users if they are drowsy by analyzing video input from
 
 ![alt text](https://raw.githubusercontent.com/polkandrew01/DrowsinessDetector/blob/master/FlowChart1.png)  
 
+[https://github.com/polkandrew01/DrowsinessDetector/blob/master/FlowChart1.png|alt=flowchart]]
+
 ## Guide
 A breakdown of the the files under our source code directory
 * **alerts.py** - alerts module that contains alert function using alert.wav in assets/
