@@ -13,6 +13,7 @@ import blinkFreq
 import time
 import firebase_login
 
+
 testing = False
 test = 0
 testFailed = 0
@@ -58,6 +59,12 @@ def multipleFace(frame):
 def main(webcamSource,username,password):
 	global test, testFailed
 	user = firebase_login.signIntoFirebase(username,password)
+	
+	# get eye and mouth aspect ratios from Firebase
+	mouth_ar = firebase_login.getMouthRatio(username, user)
+	eye_ar = firebase_login.getEyeRatio(username, user)
+
+
 	#print(firebase_login.getUserData(username,user))
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
@@ -135,15 +142,12 @@ def main(webcamSource,username,password):
 
 				frame = drawBox(frame, rect)
 				
-				# get eye and mouth aspect ratios from Firebase
-				mouth_ar = getMouthRatio(username, user)
-				eye_ar = getEyeRatio(username, user)
 				if isDrowsy.mouthOpen(shape, mouth_ar) == True:
 					MOUTH_COUNTER += 1
 				else:
 					MOUTH_COUNTER = 0
 			
-				if isDrowsy.eyesClosed(shapem eye_ar) == True:
+				if isDrowsy.eyesClosed(shape, eye_ar) == True:
 					EYE_COUNTER += 1
 				else:
 					EYE_COUNTER = 0

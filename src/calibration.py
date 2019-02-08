@@ -143,4 +143,4 @@ def main():
 	# do a bit of cleanup
 	# cv2.destroyAllWindows()
 	# vs.stop()
-main()
+#main()
