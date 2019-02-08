@@ -65,7 +65,8 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
         timestamp = {"First Created": time.time()}
         data = {"username": username,
                 "tag":tag ,
-                "current timestamp":0,
+                "current eye timestamp":0,
+                "current yawn timestamp":0,
                 "eye ratio":eyeRatio,
                 "mouth ratio":mouthRatio,
                 "timestamp":timestamp}
@@ -92,13 +93,13 @@ timeStampList = [time.time(),time.time(),time.time()]
 def createTimeStampEyes(timeStampList, start):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
-        timeStamp.update({str(x+start) + " Eye":timeStampList[x]})
+        timeStamp.update({"Eye "+str(x+start):timeStampList[x]})
     return timeStamp
 
 def createTimeStampYawn(timeStampList, start):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
-        timeStamp.update({str(x+start) + " Yawn":timeStampList[x]})
+        timeStamp.update({"Yawn "+str(x+start):timeStampList[x]})
     return timeStamp
 
 
@@ -158,9 +159,9 @@ def getAllData(user):
 
 def updateEyeTimeStamps(username,user,timestampList):
     try:
-        userdata = getUserData(username, user)
+        userdata = getUserData(parseEmail(username), user)
         userdataTimeStamps = {}
-        startTimeStamp = userdata["current timestamp"]
+        startTimeStamp = userdata["current eye timestamp"]
         # if (startTimeStamp != 0):
         userdataTimeStamps.update(userdata["timestamp"])
         timestamp = createTimeStampEyes(timeStampList,startTimeStamp)
@@ -169,7 +170,8 @@ def updateEyeTimeStamps(username,user,timestampList):
                  "eye ratio":userdata["eye ratio"],
                  "mouth ratio":userdata["mouth ratio"],
                  "tag":userdata["tag"],
-                 "current timestamp":startTimeStamp+len(timestampList)}
+                 "current yawn timestamp":userdata["current yawn timestamp"],
+                 "current eye timestamp":startTimeStamp+len(timestampList)}
         db.child("users").child(parseEmail(username)).set(data,user['idToken'])
         db.child("users").child(parseEmail(username)).child("timestamp").set(userdataTimeStamps,user['idToken'])
         return True
@@ -179,9 +181,9 @@ def updateEyeTimeStamps(username,user,timestampList):
 
 def updateYawnTimeStamps(username,user,timestampList):
     try:
-        userdata = getUserData(username, user)
+        userdata = getUserData(parseEmail(username), user)
         userdataTimeStamps = {}
-        startTimeStamp = userdata["current timestamp"]
+        startTimeStamp = userdata["current yawn timestamp"]
         # if (startTimeStamp != 0):
         userdataTimeStamps.update(userdata["timestamp"])
         timestamp = createTimeStampYawn(timeStampList,startTimeStamp)
@@ -190,7 +192,8 @@ def updateYawnTimeStamps(username,user,timestampList):
                  "eye ratio":userdata["eye ratio"],
                  "mouth ratio":userdata["mouth ratio"],
                  "tag":userdata["tag"],
-                 "current timestamp":startTimeStamp+len(timestampList)}
+                 "current eye timestamp":userdata["current eye timestamp"],
+                 "current yawn timestamp":startTimeStamp+len(timestampList)}
         db.child("users").child(parseEmail(username)).set(data,user['idToken'])
         db.child("users").child(parseEmail(username)).child("timestamp").set(userdataTimeStamps,user['idToken'])
         return True
@@ -199,7 +202,8 @@ def updateYawnTimeStamps(username,user,timestampList):
         return False
 
 # addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
-
+# updateEyeTimeStamps("davids0330@gmail.com",user,timeStampList)
+# updateYawnTimeStamps("davids0330@gmail.com",user,timeStampList)
 # db.child("users").child(parseEmail(email2)).update({"current timestamp":0},user['idToken'])
 # if(updateTimeStamps("davids0330@gmail.com",user,timeStampList)):
 #     print "successful"
