@@ -104,12 +104,13 @@ def createTimeStampYawn(timeStampList, start):
     return timeStamp
 
 
-def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
+def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, blinkFrequency, timestamp):
     try:
         data = {"username": username,
                 "tag": tag,
                 "eye ratio": eyeRatio,
                 "mouth ratio": mouthRatio,
+                "blink frequency": blinkFrequency,
                 "timestamp": timestamp}
         db.child("users").child(parseEmail(username)).update(data,user['idToken'])
         return True
@@ -118,8 +119,7 @@ def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
 
 def updateEyeRatio(username,user,eyeRatio):
     try:
-        data = {"username": username,
-                "eye ratio": eyeRatio}
+        data = {"eye ratio": eyeRatio}
         db.child("users").child(parseEmail(username)).update(data, user['idToken'])
         return True
     except Exception as e:
@@ -127,8 +127,7 @@ def updateEyeRatio(username,user,eyeRatio):
 
 def updateMouthRatio(username,user,mouthRatio):
     try:
-        data = {"username": username,
-                "mouth ratio": mouthRatio}
+        data = {"mouth ratio": mouthRatio}
         db.child("users").child(parseEmail(username)).update(data, user['idToken'])
         return True
     except Exception as e:
@@ -136,14 +135,15 @@ def updateMouthRatio(username,user,mouthRatio):
 
 def updateBlinkFrequency(username, user, blinkFrequency):
     try:
-        data = {"username": username,
-                "blink frequency": blinkFrequency}
+        data = {"blink frequency": blinkFrequency}
         db.child("users").child(parseEmail(username)).update(data, user['idToken'])
         return True
     except Exception as e:
         return False
 
-# updateBlinkFrequency("davids0330@gmail.com", user, 118)
+updateBlinkFrequency("davids0330@gmail.com", user, 118)
+updateEyeRatio("davids0330@gmail.com", user, 0.4)
+updateMouthRatio("davids0330@gmail.com", user, 0.5)
 
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name
@@ -155,6 +155,21 @@ def getUserData(username, user):
         return users.val()
     except Exception as e:
         return None
+
+def getEyeRatio(username,user):
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()["eye ratio"]
+    except Exception as e:
+        return None
+
+def getMouthRatio(username,user):
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()["mouth ratio"]
+    except Exception as e:
+        return None
+
 
 # val = getUserData(email, user)
 # print val
