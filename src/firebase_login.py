@@ -133,6 +133,17 @@ def updateMouthRatio(username,user,mouthRatio):
     except Exception as e:
         return False
 
+def updateBlinkFrequency(username, user, blinkFrequency):
+    try:
+        data = {"username": username,
+                "blink frequency": blinkFrequency}
+        db.child("users").child(parseEmail(username)).update(data, user['idToken'])
+        return True
+    except Exception as e:
+        return False
+
+# updateBlinkFrequency("davids0330@gmail.com", user, 118)
+
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name
 # Normally I wouldn't have to return None
@@ -155,7 +166,30 @@ def getAllData(user):
         raise e
         return None
 
+def getUserBlinkFrequency(username,user):
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()["blink frequency"]
+    except Exception as e:
+        return None
+
+def getAmountofYawns(username,user):
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()["current yawn timestamp"]
+    except Exception as e:
+        return None
+
+def getAmountOfEyes(username,user):
+    try:
+        users = db.child("users").child(parseEmail(username)).get(user['idToken'])
+        return users.val()["current eye timestamp"]
+    except Exception as e:
+        return None
 # print(getAllData(user))
+# print(getUserBlinkFrequency("davids0330@gmail.com",user))
+# print(getAmountofYawns("davids0330@gmail.com",user))
+# print(getAmountOfEyes("davids0330@gmail.com",user))
 
 def updateEyeTimeStamps(username,user,timestampList):
     try:
@@ -204,6 +238,7 @@ def updateYawnTimeStamps(username,user,timestampList):
 # addUserInfo(parseEmail("davids0330@gmail.com"), user, "is not manager", 0.1,0.1)
 # updateEyeTimeStamps("davids0330@gmail.com",user,timeStampList)
 # updateYawnTimeStamps("davids0330@gmail.com",user,timeStampList)
+# addUserInfo(parseEmail(email),user, IS_MANAGER, 0.2,0.3)
 # db.child("users").child(parseEmail(email2)).update({"current timestamp":0},user['idToken'])
 # if(updateTimeStamps("davids0330@gmail.com",user,timeStampList)):
 #     print "successful"
