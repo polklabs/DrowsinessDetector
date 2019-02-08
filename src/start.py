@@ -1,8 +1,7 @@
 import initialize
-import calibration
 
 # Unique button process class
-from subprocess import Popen
+from subprocess import Popen, PIPE
 import atexit
 import sys
 
@@ -81,10 +80,16 @@ def main(username, password):
 
 	def recalibrate():
 		user = firebase_login.signIntoFirebase(username, password)
-		calibration_vals = calibration.main()
-		firebase_login.updateEyeRatio(username, user, calibration_vals[0])
-		firebase_login.updateMouthRatio(username, user, calibration_vals[1])
-		
+		p = Popen(["python", "calibration.py"],stdin=PIPE, stdout=PIPE)
+		p.wait()
+		calibration_vals = p.returncode
+		p.stdout.readline()
+		p.stdout.readline()
+		firebase_login.updateEyeRatio(username, user, float(p.stdout.readline()))
+		firebase_login.updateMouthRatio(username, user, float(p.stdout.readline()))
+		p.kill()
+
+
 	atexit.register(cleanup)
 
 	top = Tkinter.Tk()
