@@ -74,15 +74,13 @@ def main():
 	totalEyeAspectRatio = 0.0
 	totalMouthAspectRatio = 0.0
 
-	while x < 200:
+	while x < 300:
 
 		frame = grabFrame(vs)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 
-		cv2.putText(frame, "Blink normally and keep mouth open", (10, 325), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-		if x == 0:
-			time.sleep(10)
+		cv2.putText(frame, "Look into the webcam and open your mouth", (10, 250), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 2)
 				
 				
 		#Get the faces in the image
@@ -132,9 +130,9 @@ def main():
 
 		if key == ord("q"):
 			break
-				
-	averageEyeAspectRatio = totalEyeAspectRatio/200
-	averageMouthAspectRatio = totalMouthAspectRatio/200
+	
+	averageEyeAspectRatio = totalEyeAspectRatio/300
+	averageMouthAspectRatio = totalMouthAspectRatio/300
 	print(averageEyeAspectRatio)
 	print(averageMouthAspectRatio)
 		
