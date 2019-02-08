@@ -11,6 +11,7 @@ import alerts
 import isDrowsy #For testing
 import blinkFreq
 import time
+import firebase_login
 
 testing = False
 test = 0
@@ -54,9 +55,10 @@ def multipleFace(frame):
 	cv2.putText(frame, "MULTIPLE FACES DETECTED", (10, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
-def main(webcamSource):
+def main(webcamSource,username,password):
 	global test, testFailed
-
+	user = firebase_login.signIntoFirebase(username,password)
+	#print(firebase_login.getUserData(username,user))
 	# initialize dlib's face detector (HOG-based) and then create
 	# the facial landmark predictor
 	print("[INFO] loading facial landmark predictor...")
