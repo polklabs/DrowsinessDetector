@@ -3,9 +3,7 @@
 ## Abstract
 Our program aims to alert users if they are drowsy by analyzing video input from a webcam. The intended use for Aerospace is for mission control workers to stay alert, as launches may occur at any time.
 
-![alt text](https://raw.githubusercontent.com/polkandrew01/DrowsinessDetector/blob/master/FlowChart1.png)  
-
-[https://github.com/polkandrew01/DrowsinessDetector/blob/master/FlowChart1.png|alt=flowchart]]
+![alt text](https://github.com/polkandrew01/DrowsinessDetector/blob/master/FlowChart1.png)  
 
 ## Guide
 A breakdown of the the files under our source code directory
