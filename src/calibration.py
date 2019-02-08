@@ -80,10 +80,8 @@ def main():
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 
-		cv2.putText(frame, "Blink normally and keep mouth open", (10, 325), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-		if x == 0:
-			time.sleep(10)
-				
+		cv2.putText(frame, "Blink normally and keep mouth open", (10, 250), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+
 				
 		#Get the faces in the image
 		rects = detector(gray, 0)
@@ -145,4 +143,4 @@ def main():
 	# do a bit of cleanup
 	# cv2.destroyAllWindows()
 	# vs.stop()
-#main()
+main()
