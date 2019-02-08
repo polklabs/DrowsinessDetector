@@ -71,7 +71,7 @@ def main(webcamSource,username,password):
 	time.sleep(1.0)
 
 	alertUser = False
-	#sentAlert = False
+	drowsyTrigger = False
 
 	startTime = time.localtime().tm_min
 	minutePassed = False
@@ -129,11 +129,6 @@ def main(webcamSource,username,password):
 						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
-						
-						#Update firebase here
-						#userRef = db.collection(u'user').document(u'id').collection(u'timestamp').document(u'drowsy')
-						#userRef.set({u'0': 'time'
-						#	}, merge=True)
 							
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
@@ -154,7 +149,15 @@ def main(webcamSource,username,password):
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
-					#Update firebase here
+
+		if drowsyTrigger == False and alertUser == True:
+			drowsyTrigger = True
+			print("Update firebase")
+			#Update firebase here
+			############################################################################################
+
+		if alertUser == False:
+			drowsyTrigger = False
 
 		alerts.alert_value(alertUser)
 		alertUser = False
