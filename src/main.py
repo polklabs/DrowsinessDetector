@@ -134,13 +134,16 @@ def main(webcamSource,username,password):
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
 				frame = drawBox(frame, rect)
-			
-				if isDrowsy.mouthOpen(shape) == True:
+				
+				# get eye and mouth aspect ratios from Firebase
+				mouth_ar = getMouthRatio(username, user)
+				eye_ar = getEyeRatio(username, user)
+				if isDrowsy.mouthOpen(shape, mouth_ar) == True:
 					MOUTH_COUNTER += 1
 				else:
 					MOUTH_COUNTER = 0
 			
-				if isDrowsy.eyesClosed(shape) == True:
+				if isDrowsy.eyesClosed(shapem eye_ar) == True:
 					EYE_COUNTER += 1
 				else:
 					EYE_COUNTER = 0
