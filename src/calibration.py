@@ -74,7 +74,7 @@ def main():
 	totalEyeAspectRatio = 0.0
 	totalMouthAspectRatio = 0.0
 
-	while x < 200:
+	while x < 300:
 
 		frame = grabFrame(vs)
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -130,9 +130,9 @@ def main():
 
 		if key == ord("q"):
 			break
-				
-	averageEyeAspectRatio = totalEyeAspectRatio/200
-	averageMouthAspectRatio = totalMouthAspectRatio/200
+	
+	averageEyeAspectRatio = totalEyeAspectRatio/300
+	averageMouthAspectRatio = totalMouthAspectRatio/300
 	print(averageEyeAspectRatio)
 	print(averageMouthAspectRatio)
 		

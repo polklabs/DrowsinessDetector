@@ -129,7 +129,12 @@ def main(webcamSource,username,password):
 						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
+						
 						#Update firebase here
+						#userRef = db.collection(u'user').document(u'id').collection(u'timestamp').document(u'drowsy')
+						#userRef.set({u'0': 'time'
+						#	}, merge=True)
+							
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 
@@ -150,9 +155,6 @@ def main(webcamSource,username,password):
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
 					#Update firebase here
-				#else:
-				#	sentAlert = False
-					#alertUser = False
 
 		alerts.alert_value(alertUser)
 		alertUser = False
