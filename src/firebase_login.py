@@ -89,11 +89,18 @@ timeStampList = [time.time(),time.time(),time.time()]
 # TO DO: Starting at 0 everytime will definitely be an issue in the future
 # Since all dictionary keys have to be unique
 # Fix it so that it starts at reasonable value?
-def createTimeStamp(timeStampList, start):
+def createTimeStampEyes(timeStampList, start):
     timeStamp = {}
     for x in range(0,len(timeStampList)):
-        timeStamp.update({str(x+start):timeStampList[x]})
+        timeStamp.update({str(x+start) + " Eye":timeStampList[x]})
     return timeStamp
+
+def createTimeStampYawn(timeStampList, start):
+    timeStamp = {}
+    for x in range(0,len(timeStampList)):
+        timeStamp.update({str(x+start) + " Yawn":timeStampList[x]})
+    return timeStamp
+
 
 def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, timestamp):
     try:
@@ -149,14 +156,35 @@ def getAllData(user):
 
 # print(getAllData(user))
 
-def updateTimeStamps(username,user,timestampList):
+def updateEyeTimeStamps(username,user,timestampList):
     try:
         userdata = getUserData(username, user)
         userdataTimeStamps = {}
         startTimeStamp = userdata["current timestamp"]
         # if (startTimeStamp != 0):
         userdataTimeStamps.update(userdata["timestamp"])
-        timestamp = createTimeStamp(timeStampList,startTimeStamp)
+        timestamp = createTimeStampEyes(timeStampList,startTimeStamp)
+        userdataTimeStamps.update(timestamp)
+        data =  {"username":userdata["username"],
+                 "eye ratio":userdata["eye ratio"],
+                 "mouth ratio":userdata["mouth ratio"],
+                 "tag":userdata["tag"],
+                 "current timestamp":startTimeStamp+len(timestampList)}
+        db.child("users").child(parseEmail(username)).set(data,user['idToken'])
+        db.child("users").child(parseEmail(username)).child("timestamp").set(userdataTimeStamps,user['idToken'])
+        return True
+    except Exception as e:
+        raise e
+        return False
+
+def updateYawnTimeStamps(username,user,timestampList):
+    try:
+        userdata = getUserData(username, user)
+        userdataTimeStamps = {}
+        startTimeStamp = userdata["current timestamp"]
+        # if (startTimeStamp != 0):
+        userdataTimeStamps.update(userdata["timestamp"])
+        timestamp = createTimeStampYawn(timeStampList,startTimeStamp)
         userdataTimeStamps.update(timestamp)
         data =  {"username":userdata["username"],
                  "eye ratio":userdata["eye ratio"],
