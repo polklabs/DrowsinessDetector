@@ -96,7 +96,7 @@ def main(username, password):
 	label = Tkinter.Label(top, text=imageText)
 	label.pack()
 
-	#top.title("Drowsiness Detector")
+	top.title("Drowsiness Detector")
 	#top.resizable(False, False)
 	#top.iconbitmap(default="../assets/icon.ico")
 
