@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Drowsy Detector</string>
+    <string name="login">Login</string>
+    <string name="title_activity_login_temp">Sign in</string>
+    <string name="password">Password</string>
+    <string name="signup">SignUp</string>
+    <string name="email">Email</string>
+    <string name="title_activity_user_detail">UserDetail</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Aerospace Drowsiness Detector</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Logout</string>
+</resources>

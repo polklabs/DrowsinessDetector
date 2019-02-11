@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "991627674455",
+    "firebase_url": "https://drowsiness-detector.firebaseio.com",
+    "project_id": "drowsiness-detector",
+    "storage_bucket": "drowsiness-detector.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991627674455:android:ef7a05f5826baa20",
+        "android_client_info": {
+          "package_name": "com.polklabs.aerospacedrowsydetector"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991627674455-67q1uovg2k7eqsr4qeekcrjp58p9olhe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.polklabs.aerospacedrowsydetector",
+            "certificate_hash": "c3f3763d213f0322633860f35bb8d1a6a4fcee37"
+          }
+        },
+        {
+          "client_id": "991627674455-0eqmkb00t83ov8io8hcb26ph9ih38rd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8-QM61THPCUZ5pA7RgFv1_ppXgSJlirA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991627674455-0eqmkb00t83ov8io8hcb26ph9ih38rd7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
