@@ -142,7 +142,7 @@ def main(webcamSource,username,password):
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
 						isEyes = True
-						print " rate >= 25 or rate <= 10 "
+						# print " rate >= 25 or rate <= 10 "
 							
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
@@ -164,18 +164,18 @@ def main(webcamSource,username,password):
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
 					isEyes = True
-					print " EYE_COUNTER >= EYE_AR_CONSEC_FRAMES " + str(EYE_COUNTER) + " >= "+ str(EYE_AR_CONSEC_FRAMES)
+					# print " EYE_COUNTER >= EYE_AR_CONSEC_FRAMES " + str(EYE_COUNTER) + " >= "+ str(EYE_AR_CONSEC_FRAMES)
 					
 				if MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
 					            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 					alertUser = True
 					isMouth = True
-					print " MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES " + str(MOUTH_COUNTER) + " >= " + str(MOUTH_AR_CONSEC_FRAMES)
+					# print " MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES " + str(MOUTH_COUNTER) + " >= " + str(MOUTH_AR_CONSEC_FRAMES)
 
 		if drowsyTrigger == False and alertUser == True:
 			drowsyTrigger = True
-			print("Update firebase")
+			# print("Update firebase")
 			user = firebase_login.signIntoFirebase(username,password)
 			if(isEyes):
 				firebase_login.updateEyeTimeStamps(username,user,[time.time()])
