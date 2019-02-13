@@ -20,7 +20,7 @@ email2 = "davids0330@gmail.com"
 password2 = "helloworld"
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-user = auth.sign_in_with_email_and_password(email,password)
+# user = auth.sign_in_with_email_and_password(email,password)
 db = firebase.database()
 
 # parses email to remove everything after the @
@@ -141,9 +141,9 @@ def updateBlinkFrequency(username, user, blinkFrequency):
     except Exception as e:
         return False
 
-updateBlinkFrequency("davids0330@gmail.com", user, 118)
-updateEyeRatio("davids0330@gmail.com", user, 0.4)
-updateMouthRatio("davids0330@gmail.com", user, 0.5)
+# updateBlinkFrequency("davids0330@gmail.com", user, 118)
+# updateEyeRatio("davids0330@gmail.com", user, 0.4)
+# updateMouthRatio("davids0330@gmail.com", user, 0.5)
 
 # Returns None if the username doesn't exist in the database
 # Currently theres some unintentional collision if you have emails that have the same name

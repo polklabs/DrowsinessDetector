@@ -61,8 +61,11 @@ def main(webcamSource,username,password):
 	user = firebase_login.signIntoFirebase(username,password)
 	
 	# get eye and mouth aspect ratios from Firebase
+	# firebase_login.updateEyeRatio(username, user, 0.3)
+	# firebase_login.updateMouthRatio(username,user,0.4)
 	mouth_ar = firebase_login.getMouthRatio(username, user)
 	eye_ar = firebase_login.getEyeRatio(username, user)
+	print "Mouth_ar: " + str(mouth_ar) + " Eye_ar: " + str(eye_ar)
 
 
 	#print(firebase_login.getUserData(username,user))
@@ -79,6 +82,8 @@ def main(webcamSource,username,password):
 
 	alertUser = False
 	drowsyTrigger = False
+	isEyes = False
+	isMouth = False
 
 	startTime = time.localtime().tm_min
 	minutePassed = False
@@ -136,6 +141,8 @@ def main(webcamSource,username,password):
 						cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 						alertUser = True
+						isEyes = True
+						print " rate >= 25 or rate <= 10 "
 							
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
 					cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
@@ -152,15 +159,31 @@ def main(webcamSource,username,password):
 				else:
 					EYE_COUNTER = 0
 				
-				if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES or MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
+				if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES:
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30), 
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
 					alertUser = True
+					isEyes = True
+					print " EYE_COUNTER >= EYE_AR_CONSEC_FRAMES " + str(EYE_COUNTER) + " >= "+ str(EYE_AR_CONSEC_FRAMES)
+					
+				if MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES:
+					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
+					            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+					alertUser = True
+					isMouth = True
+					print " MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES " + str(MOUTH_COUNTER) + " >= " + str(MOUTH_AR_CONSEC_FRAMES)
 
 		if drowsyTrigger == False and alertUser == True:
 			drowsyTrigger = True
 			print("Update firebase")
-			#Update firebase here
+			user = firebase_login.signIntoFirebase(username,password)
+			if(isEyes):
+				firebase_login.updateEyeTimeStamps(username,user,[time.time()])
+				isEyes = False
+			if(isMouth):
+				firebase_login.updateYawnTimeStamps(username, user, [time.time()])
+				isMouth = False
+			# Update firebase here
 			############################################################################################
 
 		if alertUser == False:

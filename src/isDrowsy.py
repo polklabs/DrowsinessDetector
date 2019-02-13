@@ -61,7 +61,7 @@ def eyesClosed(shape, eye_ar_thresh):
 	#Check if the person is drowsy
 	# check to see if the eye aspect ratio is below the blink
 	# threshold, and if so, increment the blink frame counter
-	if eye_ar < eye_ar_thresh:
+	if eye_ar > eye_ar_thresh:
 		return True
 		
 def mouthOpen(shape, mouth_ar_thresh):
