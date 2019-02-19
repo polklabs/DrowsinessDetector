@@ -137,18 +137,19 @@ def main(webcamSource,username,password):
 					if time.localtime().tm_min - startTime >= 1:
 						minutePassed = True
 				else:
+					#TODO Fix alarm
 					if rate >= 25 or rate <= 10:
 						text = ""
 						if rate >= 25:
 							text = "Lots of blinking"
 						else:
 							text = "Not enough blinking"
-						cv2.putText(frame, "DROWSINESS ALERT!", (10, 50),
-							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-						cv2.putText(frame, text, (10, 30),
-							cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
-						alertUser = False
-						isEyes = True
+						# cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
+						# 	cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+						# cv2.putText(frame, text, (10, 50),
+						# 	cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
+						# alertUser = False
+						# isEyes = True
 						# print " rate >= 25 or rate <= 10 "
 							
 				cv2.putText(frame, "Blinks/min: "+str(rate), (275, 30), 
