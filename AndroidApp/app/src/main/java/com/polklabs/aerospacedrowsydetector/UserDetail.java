@@ -186,6 +186,7 @@ public class UserDetail extends AppCompatActivity
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                menu.clear();
                 for(final DataSnapshot snapshot: dataSnapshot.getChildren()){
                     menu.add(snapshot.getKey());
                     if(snapshot.getKey().matches(currentUser)){
@@ -237,28 +238,32 @@ public class UserDetail extends AppCompatActivity
 
         DataSnapshot timestamps = userSnapshot.child("timestamp");
         for(int i = 0; i < eyeStamp; i++){
-            TextView textView = new TextView(UserDetail.this);
-            Long time = timestamps.child("Eye "+Integer.toString(i)).getValue(Long.class);
-            Date date = new Date(time*1000);
-            textView.setText(sdf.format(date));
-            EyeTimestamps.addView(textView);
+            try {
+                TextView textView = new TextView(UserDetail.this);
+                Long time = timestamps.child("Eye " + Integer.toString(i)).getValue(Long.class);
+                Date date = new Date(time * 1000);
+                textView.setText(sdf.format(date));
+                EyeTimestamps.addView(textView);
 
-            String day = sdfDAY.format(date);
-            String week = sdfWEEK.format(date);
-            eyeDay.put(day, eyeDay.get(day)+1);
-            eyeWeek.put(week, eyeWeek.get(week)+1);
+                String day = sdfDAY.format(date);
+                String week = sdfWEEK.format(date);
+                eyeDay.put(day, eyeDay.get(day) + 1);
+                eyeWeek.put(week, eyeWeek.get(week) + 1);
+            }catch (Exception e){}
         }
         for(int i = 0; i < yawnStamp; i++){
-            TextView textView = new TextView(UserDetail.this);
-            Long time = timestamps.child("Yawn "+Integer.toString(i)).getValue(Long.class);
-            Date date = new Date(time*1000);
-            textView.setText(sdf.format(date));
-            YawnTimestamps.addView(textView);
+            try {
+                TextView textView = new TextView(UserDetail.this);
+                Long time = timestamps.child("Yawn " + Integer.toString(i)).getValue(Long.class);
+                Date date = new Date(time * 1000);
+                textView.setText(sdf.format(date));
+                YawnTimestamps.addView(textView);
 
-            String day = sdfDAY.format(date);
-            String week = sdfWEEK.format(date);
-            yawnDay.put(day, yawnDay.get(day)+1);
-            yawnWeek.put(week, yawnWeek.get(week)+1);
+                String day = sdfDAY.format(date);
+                String week = sdfWEEK.format(date);
+                yawnDay.put(day, yawnDay.get(day) + 1);
+                yawnWeek.put(week, yawnWeek.get(week) + 1);
+            }catch (Exception e){}
         }
 
         populateGraph(EyeGraph, eyeDay, true);
