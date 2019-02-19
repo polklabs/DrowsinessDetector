@@ -4,6 +4,8 @@ import initialize
 from subprocess import Popen, PIPE
 import atexit
 import sys
+import platform
+import calibration
 
 # Have a button that starts the program
 import Tkinter
@@ -79,16 +81,22 @@ def main(username, password):
 						all_processes.remove(p)
 
 	def recalibrate():
-		user = firebase_login.signIntoFirebase(username, password)
-		p = Popen(["python", "calibration.py"],stdin=PIPE, stdout=PIPE)
-		p.wait()
-		calibration_vals = p.returncode
-		p.stdout.readline()
-		p.stdout.readline()
-		firebase_login.updateEyeRatio(username, user, float(p.stdout.readline()))
-		firebase_login.updateMouthRatio(username, user, float(p.stdout.readline()))
-		p.kill()
-
+		if(platform.system() != 'Darwin'):
+			user = firebase_login.signIntoFirebase(username, password)
+			p = Popen(["python", "calibration.py"],stdin=PIPE, stdout=PIPE)
+			p.wait()
+			calibration_vals = p.returncode
+			p.stdout.readline()
+			p.stdout.readline()
+			firebase_login.updateEyeRatio(username, user, float(p.stdout.readline()))
+			firebase_login.updateMouthRatio(username, user, float(p.stdout.readline()))
+			p.kill()
+		else:
+			user = firebase_login.signIntoFirebase(username, password)
+			calibration_vals = calibration.main()
+			firebase_login.updateEyeRatio(username, user, calibration_vals[0])
+			firebase_login.updateMouthRatio(username, user, calibration_vals[1])
+			
 
 	atexit.register(cleanup)
 
