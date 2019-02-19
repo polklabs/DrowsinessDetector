@@ -144,5 +144,5 @@ def main():
 	# cv2.destroyAllWindows()
 	# vs.stop()
 #main()
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
