@@ -176,7 +176,7 @@ def main(webcamSource,username,password):
 		if drowsyTrigger == False and alertUser == True:
 			drowsyTrigger = True
 			# print("Update firebase")
-			user = firebase_login.signIntoFirebase(username,password)
+			#user = firebase_login.signIntoFirebase(username,password)
 			if(isEyes):
 				firebase_login.updateEyeTimeStamps(username,user,[time.time()])
 				isEyes = False
