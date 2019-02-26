@@ -2,8 +2,9 @@ import sys
 import os
 import time
 import pyrebase
-sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
+import collections
 
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 import firebase_login
 import unittest
 
@@ -20,6 +21,7 @@ class TestFirebase(unittest.TestCase):
 	password = "helloworld"
 	global user
 	user = auth.sign_in_with_email_and_password(email, password)
+	global creationTime
 	
 	def test_parseEmail(self):
 		self.assertEqual(firebase_login.parseEmail("davids0330@gmail.com"),"davids0330gmailcom")
@@ -39,7 +41,34 @@ class TestFirebase(unittest.TestCase):
 		self.assertEqual(firebase_login.createTimeStampYawn([time.time()], 0), {"Yawn 0": time.time()})
 	
 	def test_addUserInfo(self):
+		global creationTime
+		creationTime = time.time()
 		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",user, "is not manager", 0.3,0.4),True)
+		
+	def test_getUserData(self):
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
+		self.assertEqual(user_data["blink frequency"],0)
+		self.assertEqual(user_data["current eye timestamp"], 0)
+		self.assertEqual(user_data["current yawn timestamp"], 0)
+		self.assertEqual(user_data["eye ratio"], 0.3)
+		self.assertEqual(user_data["mouth ratio"], 0.4)
+		self.assertEqual(user_data["tag"], "is not manager")
+		self.assertEqual(user_data["username"],"davidsun@ucsb.edu")
+		self.assertAlmostEqual(user_data["timestamp"]["First Created"],creationTime)
 
+	def test_updateUserInfo(self):
+		creationTime = time.time()
+		self.assertEqual(firebase_login.updateUserInfo("davidsun@ucsb.edu",user,"is manager", 0.28,0.38,22,{"First Created": time.time()}), True)
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
+		self.assertEqual(user_data["blink frequency"],22)
+		self.assertEqual(user_data["current eye timestamp"], 0)
+		self.assertEqual(user_data["current yawn timestamp"], 0)
+		self.assertEqual(user_data["eye ratio"], 0.28)
+		self.assertEqual(user_data["mouth ratio"], 0.38)
+		self.assertEqual(user_data["tag"], "is manager")
+		self.assertEqual(user_data["username"],"davidsun@ucsb.edu")
+		self.assertAlmostEqual(user_data["timestamp"]["First Created"],creationTime)
+
+	
 if __name__ == '__main__':
     unittest.main()
