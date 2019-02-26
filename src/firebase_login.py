@@ -216,7 +216,7 @@ def updateEyeTimeStamps(username,user,timestampList):
         startTimeStamp = userdata["current eye timestamp"]
         # if (startTimeStamp != 0):
         userdataTimeStamps.update(userdata["timestamp"])
-        timestamp = createTimeStampEyes(timeStampList,startTimeStamp)
+        timestamp = createTimeStampEyes(timestampList,startTimeStamp)
         userdataTimeStamps.update(timestamp)
         data =  {"username":userdata["username"],
                  "eye ratio":userdata["eye ratio"],
@@ -239,7 +239,7 @@ def updateYawnTimeStamps(username,user,timestampList):
         startTimeStamp = userdata["current yawn timestamp"]
         # if (startTimeStamp != 0):
         userdataTimeStamps.update(userdata["timestamp"])
-        timestamp = createTimeStampYawn(timeStampList,startTimeStamp)
+        timestamp = createTimeStampYawn(timestampList,startTimeStamp)
         userdataTimeStamps.update(timestamp)
         data =  {"username":userdata["username"],
                  "eye ratio":userdata["eye ratio"],

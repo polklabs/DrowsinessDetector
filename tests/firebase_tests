@@ -79,7 +79,8 @@ class TestFirebase(unittest.TestCase):
 	def test_updateEyeTimeStamp(self):
 		print("Running test update eye time stamp")
 		eyeTimeStamp = time.time()
-		firebase_login.updateEyeTimeStamps("davidsun@ucsb.edu",user,[eyeTimeStamp])
+		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu", user, "is manager", 0.28, 0.38,),True)
+		self.assertEqual(firebase_login.updateEyeTimeStamps("davidsun@ucsb.edu",user,[eyeTimeStamp]),True)
 		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
 		# self.assertEqual(user_data["blink frequency"], 0)
 		# self.assertEqual(user_data["current eye timestamp"], 1)
@@ -89,13 +90,14 @@ class TestFirebase(unittest.TestCase):
 		# self.assertEqual(user_data["tag"], "is manager")
 		self.assertEqual(user_data["username"], "davidsun@ucsb.edu")
 		# self.assertAlmostEqual(user_data["timestamp"]["First Created"], creationTime)
-		self.assertAlmostEqual(user_data["timestamp"]["Eye "+str(user_data["current eye timestamp"])], eyeTimeStamp)
+		self.assertAlmostEqual(user_data["timestamp"]["Eye "+str(user_data["current eye timestamp"]-1)], eyeTimeStamp)
 		
 
 	def test_updateYawnTimeStamp(self):
 		print("Running test update yawn time stamp")
+		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu", user, "is manager", 0.28, 0.38,),True)
 		yawnTimeStamp = time.time()
-		firebase_login.updateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp])
+		self.assertEqual(firebase_login.updateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
 		user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
 		# self.assertEqual(user_data["blink frequency"], 22)
 		# self.assertEqual(user_data["current eye timestamp"], 2)
@@ -105,7 +107,7 @@ class TestFirebase(unittest.TestCase):
 		# self.assertEqual(user_data["tag"], "is manager")
 		self.assertEqual(user_data["username"], "davidsun@ucsb.edu")
 		# self.assertAlmostEqual(user_data["timestamp"]["First Created"], creationTime)
-		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"])], yawnTimeStamp)
+		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"]-1)], yawnTimeStamp)
 	
 if __name__ == '__main__':
     unittest.main()
