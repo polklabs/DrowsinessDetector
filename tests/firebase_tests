@@ -1,6 +1,45 @@
 import sys
 import os
+import time
+import pyrebase
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 
 import firebase_login
 import unittest
+
+class TestFirebase(unittest.TestCase):
+	config = {
+		"apiKey": "AIzaSyD6ejYW0EFDNHgTo4Ko1Alk7U4SHTv3Jz0",
+		"authDomain": "drowsiness-detector.firebaseapp.com",
+		"databaseURL": "https://drowsiness-detector.firebaseio.com",
+		"storageBucket": "drowsiness-detector.appspot.com"
+	}
+	firebase = pyrebase.initialize_app(config)
+	auth = firebase.auth()
+	email = "davidsun@ucsb.edu"
+	password = "helloworld"
+	global user
+	user = auth.sign_in_with_email_and_password(email, password)
+	
+	def test_parseEmail(self):
+		self.assertEqual(firebase_login.parseEmail("davids0330@gmail.com"),"davids0330gmailcom")
+		self.assertEqual(firebase_login.parseEmail("!@#$%^&*()"),"")
+		self.assertEqual(firebase_login.parseEmail("abcdefghijklmnopqrstuvwxyz0123456789"),"abcdefghijklmnopqrstuvwxyz0123456789")
+		
+	def test_signIn(self):
+		self.assertEqual(firebase_login.signIntoFirebase("randomemail@gmail.com","randompassword"),None)
+		
+	def test_logIn(self):
+		self.assertEquals(firebase_login.createFirebaseAccount("davids0330@gmail.com", "helloworld"), None)
+	
+	def test_createEyeTimeStamp(self):
+		self.assertEqual(firebase_login.createTimeStampEyes([time.time()],0),{"Eye 0": time.time()})
+		
+	def test_createYawnTimeStamp(self):
+		self.assertEqual(firebase_login.createTimeStampYawn([time.time()], 0), {"Yawn 0": time.time()})
+	
+	def test_addUserInfo(self):
+		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",user, "is not manager", 0.3,0.4),True)
+
+if __name__ == '__main__':
+    unittest.main()
