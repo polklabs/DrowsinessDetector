@@ -104,14 +104,13 @@ def createTimeStampYawn(timeStampList, start):
     return timeStamp
 
 
-def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, blinkFrequency, timestamp):
+def updateUserInfo(username,user,tag,eyeRatio,mouthRatio, blinkFrequency):
     try:
         data = {"username": username,
                 "tag": tag,
                 "eye ratio": eyeRatio,
                 "mouth ratio": mouthRatio,
-                "blink frequency": blinkFrequency,
-                "timestamp": timestamp}
+                "blink frequency": blinkFrequency}
         db.child("users").child(parseEmail(username)).update(data,user['idToken'])
         return True
     except Exception as e:
@@ -223,8 +222,8 @@ def updateEyeTimeStamps(username,user,timestampList):
                  "mouth ratio":userdata["mouth ratio"],
                  "blink frequency": userdata["blink frequency"],
                  "tag":userdata["tag"],
-                 "current yawn timestamp":userdata["current yawn timestamp"],
-                 "current eye timestamp":startTimeStamp+len(timestampList)}
+                 "current eye timestamp":startTimeStamp+len(timestampList),
+                 "current yawn timestamp":userdata["current yawn timestamp"]}
         db.child("users").child(parseEmail(username)).set(data,user['idToken'])
         db.child("users").child(parseEmail(username)).child("timestamp").set(userdataTimeStamps,user['idToken'])
         return True
