@@ -230,6 +230,54 @@ def updateEyeTimeStamps(username,user,timestampList):
     except Exception as e:
         raise e
         return False
+    
+def improvedCreateTimeStampEyes(timeStampList, start,username):
+    timeStamp = {}
+    for x in range(0,len(timeStampList)):
+        timeStamp.update({"Eye "+str(x+start):timeStampList[x]})
+    return timeStamp
+
+def improvedUpdateEyeTimeStamps(username,user,timestampList):
+    try:
+        userdata = getUserData(username, user)
+        startTimeStamp = userdata["current eye timestamp"]
+        # if (startTimeStamp != 0):
+        timestamp = improvedCreateTimeStampEyes(timestampList,startTimeStamp,username)
+        data =  {
+            # "username":userdata["username"],
+            #      "eye ratio":userdata["eye ratio"],
+            #      "mouth ratio":userdata["mouth ratio"],
+            #      "blink frequency": userdata["blink frequency"],
+            #      "tag":userdata["tag"],
+                 "current eye timestamp":startTimeStamp+len(timestampList),
+                 "current yawn timestamp":userdata["current yawn timestamp"]}
+        db.child("users").child(parseEmail(username)).update(data,user['idToken'])
+        db.child("users").child(parseEmail(username)+"/timestamp").update(timestamp,user['idToken'])
+        return True
+    except Exception as e:
+        raise e
+        return False
+    
+def improvedUpdateYawnTimeStamps(username,user,timestampList):
+    try:
+        userdata = getUserData(username, user)
+        startTimeStamp = userdata["current yawn timestamp"]
+        # if (startTimeStamp != 0):
+        timestamp = createTimeStampYawn(timestampList,startTimeStamp)
+        data =  {
+            # "username":userdata["username"],
+            #      "eye ratio":userdata["eye ratio"],
+            #      "mouth ratio":userdata["mouth ratio"],
+            #      "blink frequency": userdata["blink frequency"],
+            #      "tag":userdata["tag"],
+                 "current eye timestamp":userdata["current eye timestamp"],
+                 "current yawn timestamp":startTimeStamp+len(timestampList)}
+        db.child("users").child(parseEmail(username)).update(data,user['idToken'])
+        db.child("users").child(parseEmail(username)+"/timestamp").update(timestamp,user['idToken'])
+        return True
+    except Exception as e:
+        raise e
+        return False
 
 def updateYawnTimeStamps(username,user,timestampList):
     try:
