@@ -86,7 +86,7 @@ def addUserInfo(username,user,tag,eyeRatio,mouthRatio):
 
 # timestamp = { "1": time.time(),
 #               "2": time.time() }
-timeStampList = [time.time(),time.time(),time.time()]
+# timeStampList = [time.time(),time.time(),time.time()]
 
 # TO DO: Starting at 0 everytime will definitely be an issue in the future
 # Since all dictionary keys have to be unique
@@ -131,7 +131,7 @@ def updateMouthRatio(username,user,mouthRatio):
         return True
     except Exception as e:
         return False
-
+    
 def updateBlinkFrequency(username, user, blinkFrequency):
     try:
         data = {"blink frequency": blinkFrequency}
@@ -231,18 +231,18 @@ def updateEyeTimeStamps(username,user,timestampList):
         raise e
         return False
     
-def improvedCreateTimeStampEyes(timeStampList, start,username):
-    timeStamp = {}
-    for x in range(0,len(timeStampList)):
-        timeStamp.update({"Eye "+str(x+start):timeStampList[x]})
-    return timeStamp
+# def improvedCreateTimeStampEyes(timeStampList, start,username):
+#     timeStamp = {}
+#     for x in range(0,len(timeStampList)):
+#         timeStamp.update({"Eye "+str(x+start):timeStampList[x]})
+#     return timeStamp
 
 def improvedUpdateEyeTimeStamps(username,user,timestampList):
     try:
         userdata = getUserData(username, user)
         startTimeStamp = userdata["current eye timestamp"]
         # if (startTimeStamp != 0):
-        timestamp = improvedCreateTimeStampEyes(timestampList,startTimeStamp,username)
+        timestamp = createTimeStampEyes(timestampList,startTimeStamp)
         data =  {
             # "username":userdata["username"],
             #      "eye ratio":userdata["eye ratio"],

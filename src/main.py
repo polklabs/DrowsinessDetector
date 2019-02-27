@@ -192,10 +192,10 @@ def main(webcamSource,username,password):
 			# print("Update firebase")
 			#user = firebase_login.signIntoFirebase(username,password)
 			if(isEyes):
-				firebase_login.updateEyeTimeStamps(username,user,[time.time()])
+				firebase_login.improvedUpdateEyeTimeStamps(username,user,[time.time()])
 				isEyes = False
 			if(isMouth):
-				firebase_login.updateYawnTimeStamps(username, user, [time.time()])
+				firebase_login.improvedUpdateYawnTimeStamps(username, user, [time.time()])
 				isMouth = False
 			# Update firebase here
 			############################################################################################
