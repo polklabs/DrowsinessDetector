@@ -122,24 +122,47 @@ class TestFirebase(unittest.TestCase):
 	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
 	# 		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
 			
-	def test_improvedeyeTimeStamp(self):
-		self.assertEqual(firebase_login.addUserInfo("improvedeyetimestamp@gmail.com", user, "is not manager", 0.3, 0.4),
-		                 True)
-		for x in range(0,2000):
-			eyeTimeStamp = time.time()
-			self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("improvedeyetimestamp@gmail.com", user, [eyeTimeStamp]), True)
-			user_data = firebase_login.getUserData("improvedeyetimestamp@gmail.com",user)
-			self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"]-1)], eyeTimeStamp)
-			
-	def test_improvedAggressiveTest(self):
-		for x in range(0, 1000):
+	# def test_improvedEyeTimeStamp(self):
+	# 	self.assertEqual(firebase_login.addUserInfo("improvedeyetimestamp@gmail.com", user, "is not manager", 0.3, 0.4),
+	# 	                 True)
+	# 	for x in range(0,2000):
+	# 		eyeTimeStamp = time.time()
+	# 		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("improvedeyetimestamp@gmail.com", user, [eyeTimeStamp]), True)
+	# 		user_data = firebase_login.getUserData("improvedeyetimestamp@gmail.com",user)
+	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"]-1)], eyeTimeStamp)
+	#
+	# def test_improvedAggressiveTest(self):
+	# 	for x in range(0, 1000):
+	# 		yawnTimeStamp = time.time()
+	# 		self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
+	# 		eyeTimeStamp = time.time()
+	# 		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]), True)
+	# 		user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
+	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
+	# 		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
+	
+	def test_optimizationIdea(self):
+		for x in range(0,200):
 			yawnTimeStamp = time.time()
-			self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
+			self.assertEqual(firebase_login.updateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
 			eyeTimeStamp = time.time()
-			self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]), True)
+			self.assertEqual(firebase_login.updateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]), True)
 			user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
 			self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
 			self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
-	
+			
+		for x in range (0,800):
+			yawnTimeStamp = time.time()
+			self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),
+			                 True)
+			eyeTimeStamp = time.time()
+			self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]),
+			                 True)
+			user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
+			self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)],
+			                       eyeTimeStamp)
+			self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],
+			                       yawnTimeStamp)
+			
 if __name__ == '__main__':
     unittest.main()

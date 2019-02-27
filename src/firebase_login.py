@@ -249,8 +249,9 @@ def improvedUpdateEyeTimeStamps(username,user,timestampList):
             #      "mouth ratio":userdata["mouth ratio"],
             #      "blink frequency": userdata["blink frequency"],
             #      "tag":userdata["tag"],
-                 "current eye timestamp":startTimeStamp+len(timestampList),
-                 "current yawn timestamp":userdata["current yawn timestamp"]}
+                 "current eye timestamp":startTimeStamp+len(timestampList)
+                # ,"current yawn timestamp":userdata["current yawn timestamp"]
+                }
         db.child("users").child(parseEmail(username)).update(data,user['idToken'])
         db.child("users").child(parseEmail(username)+"/timestamp").update(timestamp,user['idToken'])
         return True
@@ -270,7 +271,7 @@ def improvedUpdateYawnTimeStamps(username,user,timestampList):
             #      "mouth ratio":userdata["mouth ratio"],
             #      "blink frequency": userdata["blink frequency"],
             #      "tag":userdata["tag"],
-                 "current eye timestamp":userdata["current eye timestamp"],
+            #      "current eye timestamp":userdata["current eye timestamp"],
                  "current yawn timestamp":startTimeStamp+len(timestampList)}
         db.child("users").child(parseEmail(username)).update(data,user['idToken'])
         db.child("users").child(parseEmail(username)+"/timestamp").update(timestamp,user['idToken'])
