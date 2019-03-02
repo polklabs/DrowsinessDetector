@@ -87,9 +87,11 @@ def register_user():
 		username_entry.delete(0, Tkinter.END)
 		password_entry.delete(0, Tkinter.END)
 		# Backup for if the calibration.main() fails
-		firebase_login.addUserInfo(username_info, user, "not manager", 0.3, 0.4)
+		result = firebase_login.addUserInfo(username_info, user, "not manager", 0.3, 0.4)
 		calibration_values = calibration.main()
-		firebase_login.addUserInfo(username_info, user, "not manager", calibration_values[0], calibration_values[1])
+		if(firebase_login.addUserInfo(username_info, user, "not manager", calibration_values[0], calibration_values[1]) == False and result == False):
+			print "Note: Failed to create user in firebase"
+			print "Please manually remove authenitcated email from firebase"
 		global register_success
 		register_success = Tkinter.Toplevel(register_screen)
 		register_success.title("Success")
