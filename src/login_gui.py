@@ -86,6 +86,8 @@ def register_user():
 	else:
 		username_entry.delete(0, Tkinter.END)
 		password_entry.delete(0, Tkinter.END)
+		# Backup for if the calibration.main() fails
+		firebase_login.addUserInfo(username_info, user, "not manager", 0.3, 0.4)
 		calibration_values = calibration.main()
 		firebase_login.addUserInfo(username_info, user, "not manager", calibration_values[0], calibration_values[1])
 		global register_success

@@ -81,6 +81,7 @@ def main(username, password):
 						all_processes.remove(p)
 
 	def recalibrate():
+		# Note: not tested on linux.
 		if(platform.system() != 'Darwin'):
 			user = firebase_login.signIntoFirebase(username, password)
 			p = Popen(["python", "calibration.py"],stdin=PIPE, stdout=PIPE)
