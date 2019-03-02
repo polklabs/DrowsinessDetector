@@ -141,6 +141,9 @@ class TestFirebase(unittest.TestCase):
 			self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
 			self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
 	
+	def test_tokenExpiration(self):
+		time.sleep(3600)
+		self.assertEqual(firebase_login.signIntoFirebase("davids0330@gmail.com","helloworld"),True,"Failed to connect to firebase, Token most likely expired")
 	# def test_optimizationIdea(self):
 	# 	for x in range(0,200):
 	# 		yawnTimeStamp = time.time()

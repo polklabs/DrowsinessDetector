@@ -193,6 +193,7 @@ def main(webcamSource,username,password):
 			#user = firebase_login.signIntoFirebase(username,password)
 			if(isEyes):
 				firebase_login.improvedUpdateEyeTimeStamps(username,user,[time.time()])
+				firebase_login.updateBlinkFrequency(username,user,rate)
 				isEyes = False
 			if(isMouth):
 				firebase_login.improvedUpdateYawnTimeStamps(username, user, [time.time()])
