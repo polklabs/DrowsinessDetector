@@ -160,8 +160,12 @@ def main(webcamSource,username,password):
 				if isDrowsy.mouthOpen(shape, mouth_ar) == True:
 					MOUTH_COUNTER += 1
 				else:
-					if (MOUTH_COUNTER > 3):
-						MOUTH_COUNTER -= 3
+					if (MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES * 2):
+						MOUTH_COUNTER -= 10
+					elif(MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES and MOUTH_COUNTER < MOUTH_AR_CONSEC_FRAMES * 2):
+						MOUTH_COUNTER -= 5
+					elif(MOUTH_COUNTER > 3):
+						MOUTH_COUNTER -=2
 					else:
 						MOUTH_COUNTER = 0
 			
