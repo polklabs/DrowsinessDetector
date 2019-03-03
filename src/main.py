@@ -167,8 +167,8 @@ def main(webcamSource,username,password):
 				else:
 					EYE_COUNTER = 0
 				
-				# cv2.putText(frame, "Mouth Counter: " + str(MOUTH_COUNTER) + " Eye Counter: " + str(EYE_COUNTER),
-				#             (5,10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
+				cv2.putText(frame, "Mouth Counter: " + str(MOUTH_COUNTER) + " Eye Counter: " + str(EYE_COUNTER),
+				            (5,10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
 				if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES:
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
