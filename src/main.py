@@ -186,6 +186,11 @@ def main(webcamSource,username,password):
 					alertUser = True
 					isMouth = True
 					# print " MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES " + str(MOUTH_COUNTER) + " >= " + str(MOUTH_AR_CONSEC_FRAMES)
+				else:
+					if(MOUTH_COUNTER > 5):
+						MOUTH_COUNTER -= 5
+					else:
+						MOUTH_COUNTER = 0
 
 		if drowsyTrigger == False and alertUser == True:
 			drowsyTrigger = True
