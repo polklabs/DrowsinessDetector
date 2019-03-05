@@ -79,6 +79,15 @@ def main(webcamSource,username,password):
 	print("[INFO] starting video stream thread...")
 	vs = VideoStream(webcamSource).start()
 	time.sleep(1.0)
+	
+	def decrementor(input, threshold):
+		if (input > threshold):
+			input -= 7 * (int)(input/threshold)
+		elif (input > 3):
+			input -= 2
+		else:
+			input = 0
+		return input
 
 	alertUser = False
 	drowsyTrigger = False
@@ -160,19 +169,13 @@ def main(webcamSource,username,password):
 				if isDrowsy.mouthOpen(shape, mouth_ar) == True:
 					MOUTH_COUNTER += 1
 				else:
-					if (MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES * 2):
-						MOUTH_COUNTER -= 10
-					elif(MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES and MOUTH_COUNTER < MOUTH_AR_CONSEC_FRAMES * 2):
-						MOUTH_COUNTER -= 5
-					elif(MOUTH_COUNTER > 3):
-						MOUTH_COUNTER -=2
-					else:
-						MOUTH_COUNTER = 0
+					MOUTH_COUNTER = decrementor(MOUTH_COUNTER,MOUTH_AR_CONSEC_FRAMES)
 			
 				if isDrowsy.eyesClosed(shape, eye_ar) == True:
 					EYE_COUNTER += 1
 				else:
-					EYE_COUNTER = 0
+					# EYE_COUNTER = 0
+					EYE_COUNTER = decrementor(EYE_COUNTER,EYE_AR_CONSEC_FRAMES)
 				
 				cv2.putText(frame, "Mouth Counter: " + str(MOUTH_COUNTER) + " Eye Counter: " + str(EYE_COUNTER),
 				            (5,10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
