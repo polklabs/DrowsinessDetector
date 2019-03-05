@@ -20,16 +20,15 @@ class TestFirebase(unittest.TestCase):
 	auth = firebase.auth()
 	email = "davidsun@ucsb.edu"
 	password = "helloworld"
-	global user
 	user = auth.sign_in_with_email_and_password(email, password)
 	global creationTime
 	
 	def refreshToken(self):
-		time.sleep(600)
-		global user, email, password
-		user = auth.sign_in_with_email_and_password(email, password)
-		refreshedUser = auth.refresh(user['refreshToken'])
-		user = refreshedUser
+		while(True):
+			time.sleep(600)
+			self.user = auth.sign_in_with_email_and_password(self.email, self.password)
+			refreshedUser = auth.refresh(self.user['refreshToken'])
+			self.user = refreshedUser
 	
 	def runThread(self):
 		t1 = Thread(target=self.refreshToken())
@@ -64,13 +63,13 @@ class TestFirebase(unittest.TestCase):
 		# print("Running test add user info")
 		global creationTime
 		creationTime = time.time()
-		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",user, "is not manager", 0.3,0.4),True)
+		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",self.user, "is not manager", 0.3,0.4),True)
 		
 	def test_getUserData(self):
 		# print("Running test get user data")
 		creationTime = time.time()
-		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",user, "is not manager", 0.3,0.4),True)
-		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
+		self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu",self.user, "is not manager", 0.3,0.4),True)
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu",self.user)
 		self.assertEqual(user_data["blink frequency"],0)
 		self.assertEqual(user_data["current eye timestamp"], 0)
 		self.assertEqual(user_data["current yawn timestamp"], 0)
@@ -82,8 +81,8 @@ class TestFirebase(unittest.TestCase):
 
 	def test_updateUserInfo(self):
 		# print("Running test update user info")
-		self.assertEqual(firebase_login.updateUserInfo("davidsun@ucsb.edu",user,"is manager", 0.28,0.38,22), True)
-		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
+		self.assertEqual(firebase_login.updateUserInfo("davidsun@ucsb.edu",self.user,"is manager", 0.28,0.38,22), True)
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu",self.user)
 		self.assertEqual(user_data["blink frequency"],22)
 		# self.assertEqual(user_data["current eye timestamp"], 1)
 		# self.assertEqual(user_data["current yawn timestamp"], 0)
@@ -96,8 +95,8 @@ class TestFirebase(unittest.TestCase):
 		# print("Running test update eye time stamp")
 		eyeTimeStamp = time.time()
 		# self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu", user, "is manager", 0.28, 0.38,),True)
-		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu",user,[eyeTimeStamp]),True)
-		user_data = firebase_login.getUserData("davidsun@ucsb.edu",user)
+		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu",self.user,[eyeTimeStamp]),True)
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu",self.user)
 		# self.assertEqual(user_data["blink frequency"], 0)
 		# self.assertEqual(user_data["current eye timestamp"], 1)
 		# self.assertEqual(user_data["current yawn timestamp"], 0)
@@ -113,8 +112,8 @@ class TestFirebase(unittest.TestCase):
 		# print("Running test update yawn time stamp")
 		yawnTimeStamp = time.time()
 		# self.assertEqual(firebase_login.addUserInfo("davidsun@ucsb.edu", user, "is manager", 0.28, 0.38,),True)
-		self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
-		user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
+		self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", self.user, [yawnTimeStamp]),True)
+		user_data = firebase_login.getUserData("davidsun@ucsb.edu", self.user)
 		# self.assertEqual(user_data["blink frequency"], 22)
 		# self.assertEqual(user_data["current eye timestamp"], 2)
 		# self.assertEqual(user_data["current yawn timestamp"], 0)
@@ -129,47 +128,49 @@ class TestFirebase(unittest.TestCase):
 	# 	print("Running test aggressively time stamps: This will take about a minute and twenty seconds")
 	# 	for x in range(0,1000):
 	# 		yawnTimeStamp = time.time()
-	# 		self.assertEqual(firebase_login.updateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
+	# 		self.assertEqual(firebase_login.updateYawnTimeStamps("davidsun@ucsb.edu", self.user, [yawnTimeStamp]),True)
 	# 		eyeTimeStamp = time.time()
-	# 		self.assertEqual(firebase_login.updateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]), True)
+	# 		self.assertEqual(firebase_login.updateEyeTimeStamps("davidsun@ucsb.edu", self.user, [eyeTimeStamp]), True)
 	# 		user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
 	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
 	# 		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
 			
 	# def test_improvedEyeTimeStamp(self):
-	# 	self.assertEqual(firebase_login.addUserInfo("improvedeyetimestamp@gmail.com", user, "is not manager", 0.3, 0.4),
+	# 	self.assertEqual(firebase_login.addUserInfo("improvedeyetimestamp@gmail.com", self.user, "is not manager", 0.3, 0.4),
 	# 	                 True)
 	# 	for x in range(0,2000):
 	# 		eyeTimeStamp = time.time()
 	# 		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("improvedeyetimestamp@gmail.com", user, [eyeTimeStamp]), True)
-	# 		user_data = firebase_login.getUserData("improvedeyetimestamp@gmail.com",user)
+	# 		user_data = firebase_login.getUserData("improvedeyetimestamp@gmail.com",self.user)
 	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"]-1)], eyeTimeStamp)
 	#
-	def test_improvedAggressiveTest(self):
-		for x in range(0, 100):
-			yawnTimeStamp = time.time()
-			self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", user, [yawnTimeStamp]),True)
-			eyeTimeStamp = time.time()
-			self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu", user, [eyeTimeStamp]), True)
-			user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
-			self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
-			self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
+	# def test_improvedAggressiveTest(self):
+	# 	for x in range(0, 100):
+	# 		yawnTimeStamp = time.time()
+	# 		self.assertEqual(firebase_login.improvedUpdateYawnTimeStamps("davidsun@ucsb.edu", self.user, [yawnTimeStamp]),True)
+	# 		eyeTimeStamp = time.time()
+	# 		self.assertEqual(firebase_login.improvedUpdateEyeTimeStamps("davidsun@ucsb.edu", self.user, [eyeTimeStamp]), True)
+	# 		user_data = firebase_login.getUserData("davidsun@ucsb.edu", user)
+	# 		self.assertAlmostEqual(user_data["timestamp"]["Eye " + str(user_data["current eye timestamp"] - 1)], eyeTimeStamp)
+	# 		self.assertAlmostEqual(user_data["timestamp"]["Yawn " + str(user_data["current yawn timestamp"] - 1)],yawnTimeStamp)
 	
 	def test_tokenExpiration(self):
+		
+		print "token expiration"
 		self.runThread()
 		time.sleep(3600)
 		self.assertEqual(firebase_login.signIntoFirebase("davids0330@gmail.com","helloworld"),True,"Failed to connect to firebase, Token most likely expired")
 		
-	def test_multipleBlinkFrequencyUpdates(self):
-		
-		arrayUserNames = []
-		for x in range(0, 20):
-			arrayUserNames.append("multipleBlinkFrequencyUpdateTest" + str(x) + "@gmail.com" )
-		for x in range(0,20):
-			self.assertEqual(firebase_login.addUserInfo(arrayUserNames[x],user,"is not manager", 0.3,0.4), True)
-		for y in range(0,100):
-			for x in range(0,20):
-				self.assertEqual(firebase_login.updateBlinkFrequency(arrayUserNames[x],user,y*x+y+x))
+	# def test_multipleBlinkFrequencyUpdates(self):
+	#
+	# 	arrayUserNames = []
+	# 	for x in range(0, 20):
+	# 		arrayUserNames.append("multipleBlinkFrequencyUpdateTest" + str(x) + "@gmail.com" )
+	# 	for x in range(0,20):
+	# 		self.assertEqual(firebase_login.addUserInfo(arrayUserNames[x],user,"is not manager", 0.3,0.4), True)
+	# 	for y in range(0,100):
+	# 		for x in range(0,20):
+	# 			self.assertEqual(firebase_login.updateBlinkFrequency(arrayUserNames[x],user,y*x+y+x))
 			
 		
 	# def test_optimizationIdea(self):
