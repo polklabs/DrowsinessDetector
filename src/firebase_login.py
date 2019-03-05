@@ -160,14 +160,14 @@ def getEyeRatio(username,user):
         users = db.child("users").child(parseEmail(username)).get(user['idToken'])
         return users.val()["eye ratio"]
     except Exception as e:
-        return 0.3
+        return 0.23
 
 def getMouthRatio(username,user):
     try:
         users = db.child("users").child(parseEmail(username)).get(user['idToken'])
         return users.val()["mouth ratio"]
     except Exception as e:
-        return 0.4
+        return 0.35
 
 # print(getEyeRatio("davids0330@gmail.com",user))
 # print(getMouthRatio("davids0330@gmail.com",user))
