@@ -160,15 +160,22 @@ def main(webcamSource,username,password):
 				if isDrowsy.mouthOpen(shape, mouth_ar) == True:
 					MOUTH_COUNTER += 1
 				else:
-					MOUTH_COUNTER = 0
+					if (MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES * 2):
+						MOUTH_COUNTER -= 10
+					elif(MOUTH_COUNTER > MOUTH_AR_CONSEC_FRAMES and MOUTH_COUNTER < MOUTH_AR_CONSEC_FRAMES * 2):
+						MOUTH_COUNTER -= 5
+					elif(MOUTH_COUNTER > 3):
+						MOUTH_COUNTER -=2
+					else:
+						MOUTH_COUNTER = 0
 			
 				if isDrowsy.eyesClosed(shape, eye_ar) == True:
 					EYE_COUNTER += 1
 				else:
 					EYE_COUNTER = 0
 				
-				# cv2.putText(frame, "Mouth Counter: " + str(MOUTH_COUNTER) + " Eye Counter: " + str(EYE_COUNTER),
-				#             (5,10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
+				cv2.putText(frame, "Mouth Counter: " + str(MOUTH_COUNTER) + " Eye Counter: " + str(EYE_COUNTER),
+				            (5,10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255),2)
 				if EYE_COUNTER >= EYE_AR_CONSEC_FRAMES:
 					cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
 						cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 2)
@@ -186,6 +193,7 @@ def main(webcamSource,username,password):
 					alertUser = True
 					isMouth = True
 					# print " MOUTH_COUNTER >= MOUTH_AR_CONSEC_FRAMES " + str(MOUTH_COUNTER) + " >= " + str(MOUTH_AR_CONSEC_FRAMES)
+				
 
 		if drowsyTrigger == False and alertUser == True:
 			drowsyTrigger = True
